@@ -1,4 +1,4 @@
-import { betterAuth, custom } from "better-auth";
+import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 
@@ -13,7 +13,7 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (user) => {
-          // split the name into first and last name
+          // split the name into first and last name (name object is mapped to the first name by the config)
           const [firstName, ...rest] = user.name.split(" ");
           const lastName = rest.join(" ");
           return {

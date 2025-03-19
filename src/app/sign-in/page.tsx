@@ -10,20 +10,34 @@ export default function SignIn() {
     <div className="flex w-screen h-screen items-center justify-center">
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle className="text-xl">Welcome to O</CardTitle>
+          <CardTitle className="text-2xl font-black">Welcome to O</CardTitle>
           <CardDescription className="text-base">
-          O is our suite of tools accessible to all officers and team members of ACM UTSA. Please sign in with your 
-              workspace email
+            <p className="text-black">
+             Please sign in with the workspace email provided to you. If you think you are supposed to have a workspace email and do not, please click "I am an officer and need a workspace email" below.
+            </p>
           </CardDescription>
         </CardHeader>
         <CardContent className="flex w-full items-center justify-center">
-          <Button className="w-full max-w-sm flex items-center justify-center" onClick={async()=>{
-            setIsLoading(true);
-            await signIn();
-          }}>{
-          isLoading ? <Loader2 className="animate-spin" />:<p className="text-base">Sign In with Workspace Email</p>}</Button>
+          <Button
+            className="w-full max-w-sm flex items-center justify-center"
+            onClick={async () => {
+              setIsLoading(true);
+              await signIn();
+            }}>
+            {isLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <p className="text-base">Sign In with Workspace Email</p>
+            )}
+          </Button>
         </CardContent>
-        <CardFooter><a className="text-sm underline w-full text-end" href="mailto:tech@acmutsa.org">I am an officer and need a workspace email</a></CardFooter>
+        <CardFooter>
+          <a
+            className="text-sm underline w-full text-end"
+            href="mailto:tech@acmutsa.org">
+            I am an officer and need a workspace email
+          </a>
+        </CardFooter>
       </Card>
     </div>
   );
