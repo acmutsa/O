@@ -27,7 +27,7 @@ export default function SignIn() {
             {isLoading ? (
               <Loader2 className="animate-spin" />
             ) : (
-              <p className="text-base">Sign In with Workspace Email</p>
+              <p className="text-base font-semibold">Sign In with Workspace Email</p>
             )}
           </Button>
         </CardContent>
