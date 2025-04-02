@@ -1,3 +1,9 @@
+/*
+This configuration file is used to set up the Drizzle ORM with Turso (Sqlite) for
+database migrations and schema management. It specifies the schema file, output directory for migrations,
+and database credentials (URL and auth token) for connecting to the Turso database.
+it is also used for anything related to drizzle-kit or running migrations.
+*/
 import { config } from "dotenv";
 import { defineConfig } from "drizzle-kit";
 

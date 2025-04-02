@@ -1,21 +1,14 @@
-import { betterFetch } from "@better-fetch/fetch";
-import type { auth } from "@/lib/auth";
-import { NextRequest, NextResponse } from "next/server";
-import { db, eq } from "./db";
-import {user} from "./db/schema"
+/*
+This is the Next JS middleware file. It is used to protect the routes in the application.
+It checks if the user is authenticated and redirects them to the sign-in page if they are not.
+Please ask a project lead before changing this file.
+*/
 
-type Session = typeof auth.$Infer.Session;
+import { NextRequest, NextResponse } from "next/server";
+import { getServerAuth } from "./lib/utils";
 
 export async function middleware(request: NextRequest) {
-  const { data: session } = await betterFetch<Session>(
-    "/api/auth/get-session",
-    {
-      baseURL: request.nextUrl.origin,
-      headers: {
-        cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
-      },
-    }
-  );
+  const { data: session } = await getServerAuth(request.nextUrl.origin, request.headers.get("cookie") || "");
 
   const hasSession = !!session;
   const userRequestedSignIn = request.nextUrl.pathname === "/sign-in";
@@ -25,8 +18,9 @@ export async function middleware(request: NextRequest) {
   else if (!hasSession && userRequestedSignIn){
     return NextResponse.next();
   }
-
+  
   if (!hasSession) {
+    console.log("No session found, redirecting to sign-in");
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 

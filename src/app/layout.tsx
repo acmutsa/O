@@ -1,3 +1,9 @@
+/*
+This is the root of the project. 
+The command to run the project is: pnpm run dev 
+Ensure that you have the most recent version of the project by runnning "git fetch" then "git merge origin/main"
+IMPORTANT: PLEASE ENSURE THE PORT YOU ARE RUNNING THIS ON IS 3000 DUE TO GOOGLE AUTH CONFIGURATION
+*/
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
