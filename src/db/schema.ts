@@ -1,6 +1,17 @@
 import { sql, relations } from "drizzle-orm";
 import { integer, sqliteTable, text, primaryKey } from "drizzle-orm/sqlite-core";
 
+/*
+  * This file defines the database schema for the application using
+  * drizzle-orm with Turso (Sqlite). It includes tables for users, positions,
+  * meetings, and session management for authentication. 
+  *
+  * The schema is designed to support a meeting management system with
+  * user roles and relationships between users and meetings.
+  *
+  * Note: Do not modify the auth-related tables unless you know what you're doing.
+*/
+
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   firstName: text("first_name", { length: 255 }).notNull(),
@@ -41,7 +52,16 @@ export const usersToPositions = sqliteTable("users_to_positions", {
     .notNull()
     .references(() => position.positionID, { onDelete: "cascade" }),
 },
-(table)=>[primaryKey({columns:[table.userID, table.positionID]})]);
+(table)=>[
+  primaryKey(
+    {
+      columns:[
+      table.userID, 
+      table.positionID
+    ]
+  }
+)
+]);
 
 export const usersToPositionsRelations = relations(usersToPositions, ({ one }) => ({
   user: one(user, {
@@ -104,7 +124,7 @@ export const meetingInvitesRelations = relations(meetingInvites, ({ one }) => ({
 }));
 
 
-// Auth Stuff - DO NOT MODIFY
+// AUTH STUFF - DO NOT MODIFY
 
 export const session = sqliteTable("session", {
   id: text("id").primaryKey(),

@@ -1,4 +1,8 @@
 "use client"
+/*
+This is the sign in page for the app. 
+It is a simple page that allows the user to sign in with their workspace email.
+*/
 import { Button } from "@/components/ui/button";
 import { signIn } from "@/lib/auth-client";
 import { Card, CardContent, CardDescription, CardFooter, CardTitle, CardHeader } from "@/components/ui/card";

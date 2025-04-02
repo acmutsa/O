@@ -1,7 +1,11 @@
 "use client";
+/*
+This will be the dashboard page for the app.
+Currently, it is a simple page that allows the user to sign out.
+*/
 import { Button } from "@/components/ui/button";
 import {useAction} from "next-safe-action/hooks"
-import { signUserOut } from "@/actions/user";
+import { signUserOut } from "@/actions/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
