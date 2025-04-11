@@ -3,32 +3,22 @@ import { meeting, meetingInvites } from "@/db/schema";
 import { getUser } from "@/db/functions";
 import { notFound } from "next/navigation";
 import { getUserFromSession } from "@/actions/auth";
+import { getMeetingDetails } from "@/actions/meetings";
 
 export default async function Page({ params }: { params: Promise<{ meeting_id: string }> }) {
   const { meeting_id: meetingID } = await params;
-
-    
-  const [fetchedMeeting] = await db.query.meeting.findMany({
-    where: eq(meeting.meetingID, meetingID),
-    columns: {
-      createdAt: false
-    }
-  });
+  const fetchedMeeting = await getMeetingDetails({ meetingID });
   
   // If there is no meeting found
-  if (!fetchedMeeting)
+  if (!fetchedMeeting?.data)
     notFound();
 
-  // Will be called separately
-  const meetingAttendees = await db.query.meetingInvites.findMany({
-    where: eq(meetingInvites.meetingID, meetingID)
-  })
+  const { data: meeting } = fetchedMeeting;
 
   const user = await getUserFromSession();
   
   return (
     <div>
-      hi
       { 
         user?.data?.user.id === meetingID && 
         <div>
@@ -36,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ meeting_id: s
         </div>
       }
       {
-        fetchedMeeting.showAttendees &&
+        meeting.showAttendees &&
         <div>
           Attendees will be shown
         </div>

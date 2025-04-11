@@ -14,6 +14,19 @@ const PreviewLimitSchema = z.object({
   previewLimit: z.number()
 }).merge(MeetingIDSchema);
 
+export const getMeetingDetails = userAction
+  .schema(MeetingIDSchema)
+  .action(async ({ parsedInput: { meetingID } }) => {
+    const fetchedMeeting = await db.query.meeting.findFirst({
+      where: (meeting, { eq }) => eq(meeting.meetingID, meetingID),
+      columns: {
+        createdAt: false
+      }
+    });
+
+    return fetchedMeeting;
+  });
+
 export const getAttendeeCount = userAction
   .schema(MeetingIDSchema)
   .action(async ({ parsedInput: { meetingID } }) => {
