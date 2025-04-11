@@ -23,8 +23,10 @@ export const userAction = actionClient.use(async ({ next, }) => {
       _errors: ["Session not found or expired! Please log in to complete action"]
     });
   }
+  const { session, user} = userData;
   return next({ ctx:{
-    userData,
+    session,
+    user,
     cookies,
     headers: headersList,
   } });
