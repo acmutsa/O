@@ -26,42 +26,55 @@ import {
 } from "@/components/ui/sidebar";
 
 // This is sample data.
-const data = {
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  sections: [
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar: string | null;
+  };
+}
+
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  const sections = [
     {
-      name: "Design Engineering",
+      name: "Meetings",
+      url: "#",
+      icon: AudioWaveform,
+    },
+    {
+      name: "Directory",
+      url: "#",
+      icon: BookOpen,
+    },
+    {
+      name: "Initiatives",
       url: "#",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
+      name: "Finance",
       url: "#",
       icon: PieChart,
     },
     {
-      name: "Travel",
+      name: "Inventory",
       url: "#",
-      icon: Map,
+      icon: GalleryVerticalEnd,
     },
-  ],
-};
+  ];
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <Header />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain sections={data.sections} />
+        <NavMain sections={sections} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

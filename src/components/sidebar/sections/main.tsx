@@ -37,15 +37,19 @@ export function NavMain({
   const { isMobile } = useSidebar();
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+    <SidebarGroup>
+      <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden">
+        Tools
+      </SidebarGroupLabel>
       <SidebarMenu>
         {sections.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
                 <item.icon />
-                <span>{item.name}</span>
+                <span className="group-data-[collapsible=icon]:hidden">
+                  {item.name}
+                </span>
               </a>
             </SidebarMenuButton>
             <DropdownMenu>
@@ -77,12 +81,6 @@ export function NavMain({
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );
