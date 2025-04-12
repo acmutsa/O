@@ -3,7 +3,7 @@ import { useAction } from "next-safe-action/hooks";
 import { signUserOut } from "@/actions/auth";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
-import { auth, getSession } from "@/lib/auth";
+import { auth, getSession } from "@/lib/server/auth";
 
 export default async function Page() {
 	const session = await getSession();

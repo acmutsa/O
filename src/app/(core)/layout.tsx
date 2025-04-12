@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import Header from "./header";
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/lib/server/auth";
 import { redirect } from "next/navigation";
 
 export default async function Layout({
