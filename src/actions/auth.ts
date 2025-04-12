@@ -5,11 +5,11 @@ import { userAction } from "@/lib/safe-action";
 import { auth } from "@/lib/auth";
 // this is mainly an example of a server action declaration
 export const signUserOut = userAction.action(async ({ ctx: { headers } }) => {
-  const success = await auth.api.signOut({
-    headers,
-  });
+	const success = await auth.api.signOut({
+		headers,
+	});
 
-  return {
-    success,
-  };
+	return {
+		success,
+	};
 });

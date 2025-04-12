@@ -3,20 +3,20 @@ import { toast } from "sonner";
 
 // auth client is used to handle the authentication flow in the client side
 export const { useSession, ...authClient } = createAuthClient({
-  fetchOptions: {
-    onError(e) {
-      if (e.error.status === 429) {
-        toast.error("Too many requests. Please try again later.");
-      }
-    },
-  },
-  //you can pass client configuration here
+	fetchOptions: {
+		onError(e) {
+			if (e.error.status === 429) {
+				toast.error("Too many requests. Please try again later.");
+			}
+		},
+	},
+	//you can pass client configuration here
 });
 
 // signIn function is used to initiate the sign-in process
 export const signIn = async () => {
-  await authClient.signIn.social({
-    provider: "google",
-    callbackURL: "/",
-  });
+	await authClient.signIn.social({
+		provider: "google",
+		callbackURL: "/",
+	});
 };
