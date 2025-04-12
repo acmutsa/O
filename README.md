@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img width="150" height="150" src="https://github.com/user-attachments/assets/2434dd0f-83b3-4bec-b9bd-e3fa4db128f0" />
+</div>
 
-## Getting Started
+<br/>
+<div align="center">
+  <h3>ACM UTSA's Internal Officer Dashboard and Tooling 🛠️</h3>
+</div>
 
-First, run the development server:
+<br/>
+<br/>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> _Note_: Unlike [HackKit](https://github.com/acmutsa/hackkit) and [ClubKit](https://github.com/acmutsa/clubkit), O is maintained primarily for internal use by ACM UTSA. The repository is able to be deployed however and used as reference! While we cannot garuntee support, if you are looking to deploy O for your orgainzation feel free to join our [Discord](https://go.acmutsa.org/projects-discord) to chat.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## About
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O is a smorgasbord of internal tools that is used across ACM, its hackathons, and suborgs. It supports (or plans to support) tooling for:
 
-## Learn More
+- Meetings
+- Officer Directory
+- Finances
+- Inventory
+- _and more!_
 
-To learn more about Next.js, take a look at the following resources:
+We also use software such as Google Workspace, Notion, and Slack with which O works in tandem.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Unlike with other ACM OSS software, O generally is only contributed to by internal members. If you would like to join us, feel free to join the [Discord](https://go.acmutsa.org/projects-discord)!
 
-## Deploy on Vercel
+**Contributers:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<a href="https://github.com/acmutsa/O/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=acmutsa/O" />
+</a>
