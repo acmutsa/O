@@ -5,7 +5,6 @@ The basic "actionCleint" should not be used. Please strictly use the "userAction
 This client is a wrapper around the "actionClient" that adds a user to the context of the action.
 */
 import { createSafeActionClient } from "next-safe-action";
-import z from "zod";
 import { getSession } from "./auth";
 
 const actionClient = createSafeActionClient();

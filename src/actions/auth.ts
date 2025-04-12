@@ -1,8 +1,8 @@
 /* Any server actions related to auth should be in this file. DO NOT REMOVE THE "use server" */
 "use server";
 
-import { userAction } from "@/lib/safe-action";
-import { auth } from "@/lib/auth";
+import { userAction } from "@/lib/server/safe-action";
+import { auth } from "@/lib/server/auth";
 import { headers } from "next/headers";
 
 // this is mainly an example of a server action declaration
