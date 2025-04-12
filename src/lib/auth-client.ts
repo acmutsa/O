@@ -2,7 +2,7 @@ import { createAuthClient } from "better-auth/react"; // make sure to import fro
 import { toast } from "sonner";
 
 // auth client is used to handle the authentication flow in the client side
-export const authClient = createAuthClient({
+export const { useSession, ...authClient } = createAuthClient({
   fetchOptions: {
     onError(e) {
       if (e.error.status === 429) {
@@ -14,9 +14,9 @@ export const authClient = createAuthClient({
 });
 
 // signIn function is used to initiate the sign-in process
-export const signIn = async ()=> {
+export const signIn = async () => {
   await authClient.signIn.social({
     provider: "google",
     callbackURL: "/",
   });
-} 
+};
