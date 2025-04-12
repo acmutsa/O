@@ -54,11 +54,11 @@ importers:
         specifier: ^16.4.7
         version: 16.4.7
       drizzle-orm:
-        specifier: ^0.40.0
-        version: 0.40.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6)
+        specifier: ^0.41.0
+        version: 0.41.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6)
       drizzle-zod:
         specifier: ^0.7.1
-        version: 0.7.1(drizzle-orm@0.40.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6))(zod@3.24.2)
+        version: 0.7.1(drizzle-orm@0.41.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6))(zod@3.24.2)
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.0.0)
@@ -106,8 +106,8 @@ importers:
         specifier: ^19
         version: 19.0.3(@types/react@19.0.8)
       drizzle-kit:
-        specifier: ^0.30.5
-        version: 0.30.5
+        specifier: ^0.30.6
+        version: 0.30.6
       postcss:
         specifier: ^8
         version: 8.5.2
@@ -1357,12 +1357,12 @@ packages:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
-  drizzle-kit@0.30.5:
-    resolution: {integrity: sha512-l6dMSE100u7sDaTbLczibrQZjA35jLsHNqIV+jmhNVO3O8jzM6kywMOmV9uOz9ZVSCMPQhAZEFjL/qDPVrqpUA==}
+  drizzle-kit@0.30.6:
+    resolution: {integrity: sha512-U4wWit0fyZuGuP7iNmRleQyK2V8wCuv57vf5l3MnG4z4fzNTjY/U13M8owyQ5RavqvqxBifWORaR3wIUzlN64g==}
     hasBin: true
 
-  drizzle-orm@0.40.0:
-    resolution: {integrity: sha512-7ptk/HQiMSrEZHnAsSlBESXWj52VwgMmyTEfoNmpNN2ZXpcz13LwHfXTIghsAEud7Z5UJhDOp8U07ujcqme7wg==}
+  drizzle-orm@0.41.0:
+    resolution: {integrity: sha512-7A4ZxhHk9gdlXmTdPj/lREtP+3u8KvZ4yEN6MYVxBzZGex5Wtdc+CWSbu7btgF6TB0N+MNPrvW7RKBbxJchs/Q==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -3162,7 +3162,7 @@ snapshots:
 
   dotenv@16.4.7: {}
 
-  drizzle-kit@0.30.5:
+  drizzle-kit@0.30.6:
     dependencies:
       '@drizzle-team/brocli': 0.10.2
       '@esbuild-kit/esm-loader': 2.6.5
@@ -3172,15 +3172,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.40.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6):
+  drizzle-orm@0.41.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6):
     optionalDependencies:
       '@libsql/client': 0.14.0
       gel: 2.0.1
       kysely: 0.27.6
 
-  drizzle-zod@0.7.1(drizzle-orm@0.40.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6))(zod@3.24.2):
+  drizzle-zod@0.7.1(drizzle-orm@0.41.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6))(zod@3.24.2):
     dependencies:
-      drizzle-orm: 0.40.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6)
+      drizzle-orm: 0.41.0(@libsql/client@0.14.0)(gel@2.0.1)(kysely@0.27.6)
       zod: 3.24.2
 
   eastasianwidth@0.2.0: {}
