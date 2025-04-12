@@ -1,8 +1,9 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { headers } from "next/headers";
 
-import { db } from "@/db"; 
+import { db } from "@/db";
 
 export const auth = betterAuth({
   appName: "O",
@@ -75,3 +76,9 @@ export const auth = betterAuth({
   // https://better-auth.vercel.app/docs/integrations/next#server-action-cookies
   plugins: [nextCookies()],
 });
+
+export async function getSession() {
+  return await auth.api.getSession({
+    headers: await headers(),
+  });
+}

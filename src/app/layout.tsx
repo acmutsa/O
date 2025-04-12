@@ -6,9 +6,9 @@ IMPORTANT: PLEASE ENSURE THE PORT YOU ARE RUNNING THIS ON IS 3000 DUE TO GOOGLE 
 */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +18,11 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const calsans = localFont({
+  src: "./fonts/calsans-semi.woff2",
+  variable: "--font-calsans",
 });
 
 export const metadata: Metadata = {
@@ -33,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${calsans.variable} antialiased`}
       >
         {children}
         <Toaster />

@@ -7,11 +7,11 @@ it is also used for anything related to drizzle-kit or running migrations.
 import { config } from "dotenv";
 import { defineConfig } from "drizzle-kit";
 
-config({ path: "../../.env" });
+config({ path: "./.env" });
 
 export default defineConfig({
-  schema: "./schema.ts",
-  out: "./migrations",
+  schema: "src/db/schema.ts",
+  out: "src/db/migrations",
   dialect: "turso",
   dbCredentials: {
     url: process.env.TURSO_DATABASE_URL!,
