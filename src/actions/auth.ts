@@ -3,10 +3,12 @@
 
 import { userAction } from "@/lib/safe-action";
 import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+
 // this is mainly an example of a server action declaration
-export const signUserOut = userAction.action(async ({ ctx: { headers } }) => {
+export const signUserOut = userAction.action(async ({ ctx: { session } }) => {
 	const success = await auth.api.signOut({
-		headers,
+		headers: await headers(),
 	});
 
 	return {
