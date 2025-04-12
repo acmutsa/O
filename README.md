@@ -15,7 +15,7 @@
 
 ## About
 
-O is a smorgasbord of internal tools that is used across ACM, its hackathons, and suborgs. It supports (or plans to support) tooling for:
+O is a smorgasbord of internal tools that is used across ACM, including its suborgs and hackathons. It supports (or plans to support) tooling for:
 
 - Meetings
 - Officer Directory
