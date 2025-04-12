@@ -1,12 +1,16 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   BadgeCheck,
   Bell,
   ChevronsUpDown,
+  Cog,
   CreditCard,
   LogOut,
   Sparkles,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -37,6 +41,25 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const currentTheme = document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+    setTheme(currentTheme);
+  }, []);
+
+  function toggleTheme() {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.cookie = `o_theme=${newTheme}; path=/; max-age=31536000`;
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -95,23 +118,15 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+                <Cog />
+                Settings
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+              <DropdownMenuItem
+                onClick={toggleTheme}
+                className="cursor-pointer"
+              >
+                {theme === "light" ? <Sun /> : <Moon />}
+                Toggle theme
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

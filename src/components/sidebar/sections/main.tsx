@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { usePathname } from "next/navigation";
 
 export function NavMain({
   sections,
@@ -35,6 +36,7 @@ export function NavMain({
   }[];
 }) {
   const { isMobile } = useSidebar();
+  const pathname = usePathname();
 
   return (
     <SidebarGroup>
@@ -44,7 +46,14 @@ export function NavMain({
       <SidebarMenu>
         {sections.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton
+              isActive={
+                pathname === "/"
+                  ? pathname === item.url
+                  : pathname.startsWith(item.url)
+              }
+              asChild
+            >
               <a href={item.url}>
                 <item.icon />
                 <span className="group-data-[collapsible=icon]:hidden">

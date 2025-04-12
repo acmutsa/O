@@ -12,6 +12,7 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  Home,
 } from "lucide-react";
 
 import { NavMain } from "./sections/main";
@@ -39,28 +40,33 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const sections = [
     {
+      name: "Home",
+      url: "/",
+      icon: Home,
+    },
+    {
       name: "Meetings",
-      url: "#",
+      url: "/meet",
       icon: AudioWaveform,
     },
     {
       name: "Directory",
-      url: "#",
+      url: "/directory",
       icon: BookOpen,
     },
     {
       name: "Initiatives",
-      url: "#",
+      url: "/initiatives",
       icon: Frame,
     },
     {
       name: "Finance",
-      url: "#",
+      url: "/finance",
       icon: PieChart,
     },
     {
       name: "Inventory",
-      url: "#",
+      url: "/inventory",
       icon: GalleryVerticalEnd,
     },
   ];
