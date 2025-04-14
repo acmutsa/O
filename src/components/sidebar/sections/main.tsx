@@ -48,7 +48,7 @@ export function NavMain({
 					<SidebarMenuItem key={item.name}>
 						<SidebarMenuButton
 							isActive={
-								pathname === "/"
+								item.url === "/"
 									? pathname === item.url
 									: pathname.startsWith(item.url)
 							}
