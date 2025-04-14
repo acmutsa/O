@@ -53,6 +53,10 @@ export async function middleware(req: NextRequest) {
 				}
 
 				after(async () => {
+					const referrerFromQuery =
+						req.nextUrl.searchParams.get("ref");
+					const referrerValue =
+						referrerFromQuery ?? req.headers.get("referer") ?? null;
 					await db
 						.update(links)
 						.set({
@@ -61,7 +65,7 @@ export async function middleware(req: NextRequest) {
 						.where(eq(links.id, link.id));
 					await db.insert(clicks).values({
 						linkId: link.id,
-						referrer: req.headers.get("referer") ?? null,
+						referrer: referrerValue,
 					});
 				});
 

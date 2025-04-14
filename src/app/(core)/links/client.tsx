@@ -261,6 +261,13 @@ function LinkRow({ link }: { link: Link }) {
 								<Copy className="mr-2 h-4 w-4" />
 								Copy destination URL
 							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => copyToClipboard(link.id)}
+								className="cursor-pointer"
+							>
+								<Copy className="mr-2 h-4 w-4" />
+								Copy link ID
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
