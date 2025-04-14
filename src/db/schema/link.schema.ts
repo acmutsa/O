@@ -25,6 +25,7 @@ export const links = sqliteTable(
 export const clicks = sqliteTable("clicks", (t) => ({
 	id: t.integer("id").primaryKey({ autoIncrement: true }),
 	linkId: t.text("link_id").references(() => links.id),
+	referrer: t.text("referrer"),
 	createdAt: t
 		.integer("created_at", { mode: "timestamp_ms" })
 		.notNull()

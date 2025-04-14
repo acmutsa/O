@@ -61,6 +61,7 @@ export async function middleware(req: NextRequest) {
 						.where(eq(links.id, link.id));
 					await db.insert(clicks).values({
 						linkId: link.id,
+						referrer: req.headers.get("referer") ?? null,
 					});
 				});
 
