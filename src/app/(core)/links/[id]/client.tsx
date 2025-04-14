@@ -248,66 +248,30 @@ export function LinkAnalyticsClient({
 	clickData,
 	pieData,
 }: LinkAnalyticsClientProps) {
+	const fullUrl = `${link.host}${link.slug}`;
+
 	return (
-		<div className="grid gap-6 md:grid-cols-2">
-			<div className="space-y-4">
-				<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+		<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<div className="grid grid-rows-2 gap-6">
+				{/* Link Details Card */}
+				<div className="rounded-lg border bg-card shadow-sm">
 					<div className="p-6">
-						<h3 className="text-lg font-medium">Link Details</h3>
+						<h3 className="mb-4 border-b pb-2 text-lg font-medium">
+							Link Details
+						</h3>
 						<LinkUpdateFormInternal link={link} />
 					</div>
 				</div>
-			</div>
 
-			<div className="space-y-6">
-				<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+				{/* Referrer Sources Card */}
+				<div className="rounded-lg border bg-card shadow-sm">
 					<div className="p-6">
-						<h3 className="mb-4 text-lg font-medium">
-							Clicks - Last 7 Days
-						</h3>
-						<div className="h-[300px]">
-							<ChartContainer
-								config={{
-									clicks: {
-										label: "Clicks",
-										color: "hsl(var(--chart-1))",
-									},
-								}}
-							>
-								<RechartsBarChart data={clickData}>
-									<CartesianGrid strokeDasharray="3 3" />
-									<XAxis dataKey="name" />
-									<YAxis />
-									<ChartTooltip
-										content={
-											<ChartTooltipContent
-												labelKey="name"
-												indicator="dot"
-											/>
-										}
-									/>
-									<ChartLegend
-										content={
-											<ChartLegendContent nameKey="clicks" />
-										}
-									/>
-									<Bar
-										dataKey="clicks"
-										fill="var(--color-clicks)"
-									/>
-								</RechartsBarChart>
-							</ChartContainer>
-						</div>
-					</div>
-				</div>
-
-				<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
-					<div className="p-6">
-						<h3 className="mb-4 text-lg font-medium">
+						<h3 className="mb-4 border-b pb-2 text-lg font-medium">
 							Referrer Sources
 						</h3>
-						<div className="h-[300px]">
+						<div className="flex h-[260px] items-center justify-center">
 							<ChartContainer
+								className="flex h-full w-full items-center justify-center"
 								config={pieData.reduce((acc, item, index) => {
 									return {
 										...acc,
@@ -320,13 +284,13 @@ export function LinkAnalyticsClient({
 									};
 								}, {})}
 							>
-								<RechartsPieChart>
+								<RechartsPieChart width={240} height={240}>
 									<Pie
 										data={pieData}
 										cx="50%"
 										cy="50%"
 										labelLine={false}
-										outerRadius={80}
+										outerRadius={70}
 										fill="#8884d8"
 										dataKey="value"
 										nameKey="name"
@@ -357,6 +321,94 @@ export function LinkAnalyticsClient({
 										}
 									/>
 								</RechartsPieChart>
+							</ChartContainer>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div className="grid grid-rows-2 gap-6">
+				{/* QR Code Card */}
+				<div className="rounded-lg border bg-card shadow-sm">
+					<div className="p-6">
+						<h3 className="mb-4 border-b pb-2 text-lg font-medium">
+							QR Code
+						</h3>
+						<div className="flex flex-col items-center justify-center space-y-4">
+							<div className="flex h-36 w-36 items-center justify-center rounded-lg border bg-gray-100">
+								<p className="px-2 text-center text-sm text-muted-foreground">
+									QR code generation coming soon
+								</p>
+							</div>
+							<div className="flex w-full flex-col items-center gap-2">
+								<div className="w-full truncate rounded bg-muted p-2 text-center text-sm">
+									{fullUrl}
+								</div>
+								<Button
+									className="w-full"
+									variant="outline"
+									onClick={() => {
+										navigator.clipboard.writeText(fullUrl);
+										toast.success(
+											"Link copied to clipboard",
+										);
+									}}
+								>
+									Copy Link
+								</Button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Clicks Chart Card */}
+				<div className="rounded-lg border bg-card shadow-sm">
+					<div className="p-6">
+						<h3 className="mb-4 border-b pb-2 text-lg font-medium">
+							Clicks - Last 7 Days
+						</h3>
+						<div className="flex h-[260px] items-center justify-center">
+							<ChartContainer
+								className="h-full w-full"
+								config={{
+									clicks: {
+										label: "Clicks",
+										color: "hsl(var(--chart-1))",
+									},
+								}}
+							>
+								<RechartsBarChart
+									width={400}
+									height={240}
+									data={clickData}
+									margin={{
+										top: 10,
+										right: 30,
+										bottom: 30,
+										left: 10,
+									}}
+								>
+									<CartesianGrid strokeDasharray="3 3" />
+									<XAxis dataKey="name" />
+									<YAxis />
+									<ChartTooltip
+										content={
+											<ChartTooltipContent
+												labelKey="name"
+												indicator="dot"
+											/>
+										}
+									/>
+									<ChartLegend
+										content={
+											<ChartLegendContent nameKey="clicks" />
+										}
+									/>
+									<Bar
+										dataKey="clicks"
+										fill="var(--color-clicks)"
+									/>
+								</RechartsBarChart>
 							</ChartContainer>
 						</div>
 					</div>

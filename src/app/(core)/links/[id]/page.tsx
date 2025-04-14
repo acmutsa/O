@@ -96,22 +96,25 @@ export default async function Page({
 	}));
 
 	return (
-		<div className="container space-y-8 py-6">
-			<div className="flex items-center justify-between">
-				<div>
-					<h1 className="text-3xl font-bold tracking-tight">
-						Link Analytics
-					</h1>
-					<p className="text-muted-foreground">
-						Created{" "}
-						{formatDistanceToNow(new Date(linkData.createdAt), {
-							addSuffix: true,
-						})}
-					</p>
-				</div>
-				<div className="flex items-center space-x-2">
-					<div className="font-medium">
-						Total clicks: {linkData.clicks}
+		<div className="container py-8">
+			<div className="mb-8 rounded-lg border bg-card p-6 shadow-sm">
+				<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+					<div>
+						<h1 className="text-3xl font-bold tracking-tight">
+							Link Analytics
+						</h1>
+						<p className="text-muted-foreground">
+							Created{" "}
+							{formatDistanceToNow(new Date(linkData.createdAt), {
+								addSuffix: true,
+							})}
+						</p>
+					</div>
+					<div className="flex items-center rounded-full bg-primary/10 px-4 py-2">
+						<div className="font-medium">
+							Total clicks:{" "}
+							<span className="font-bold">{linkData.clicks}</span>
+						</div>
 					</div>
 				</div>
 			</div>
