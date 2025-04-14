@@ -20,6 +20,7 @@ O is a smorgasbord of internal tools that is used across ACM, including its subo
 - Meetings
 - Officer Directory
 - Finances
+- Go Links
 - Inventory
 - _and more!_
 
