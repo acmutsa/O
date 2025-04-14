@@ -8,7 +8,7 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4 # Use a more recent version
+              uses: actions/checkout@v4
 
             - name: Check for pnpm-lock.yaml and no package-lock.json
               run: |
