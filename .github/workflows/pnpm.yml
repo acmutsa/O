@@ -1,0 +1,23 @@
+name: PNPM Lockfile Check
+
+on: [pull_request]
+
+jobs:
+    pnpm-lock-check:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4 # Use a more recent version
+
+            - name: Check for pnpm-lock.yaml and no package-lock.json
+              run: |
+                  if [ -f package-lock.json ]; then
+                    echo "Error: package-lock.json found. Please ensure you are using pnpm, not npm."
+                    exit 1
+                  fi
+                  if [ ! -f pnpm-lock.yaml ]; then
+                    echo "Error: pnpm-lock.yaml not found."
+                    exit 1
+                  fi
+                  echo "Lockfile check passed."
