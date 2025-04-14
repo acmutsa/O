@@ -163,6 +163,7 @@ export function LinksTable({ links }: LinksTableProps) {
 function LinkRow({ link }: { link: Link }) {
 	const [copied, setCopied] = useState(false);
 	const shortUrl = `${link.host}${link.slug}`;
+	const router = useRouter();
 
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
@@ -170,8 +171,16 @@ function LinkRow({ link }: { link: Link }) {
 		setTimeout(() => setCopied(false), 2000);
 	};
 
+	const navigateToLinkConfig = (e: React.MouseEvent) => {
+		e.preventDefault();
+		router.push(`/links/${link.id}`);
+	};
+
 	return (
-		<div className="flex items-center justify-between rounded-md border p-5">
+		<div
+			className="flex cursor-pointer items-center justify-between rounded-md border p-5 hover:bg-gray-50 dark:hover:bg-gray-900/20"
+			onClick={navigateToLinkConfig}
+		>
 			<div className="flex items-center gap-3">
 				<div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
 					<img
@@ -194,9 +203,10 @@ function LinkRow({ link }: { link: Link }) {
 							variant="ghost"
 							size="icon"
 							className="h-6 w-6"
-							onClick={() =>
-								copyToClipboard(`https://${shortUrl}`)
-							}
+							onClick={(e) => {
+								e.stopPropagation();
+								copyToClipboard(`https://${shortUrl}`);
+							}}
 						>
 							<Copy className="h-3.5 w-3.5" />
 							<span className="sr-only">Copy short URL</span>
@@ -207,6 +217,7 @@ function LinkRow({ link }: { link: Link }) {
 						target="_blank"
 						rel="noopener noreferrer"
 						className="line-clamp-1 text-sm text-muted-foreground"
+						onClick={(e) => e.stopPropagation()}
 					>
 						{link.toUrl}
 					</a>
@@ -230,6 +241,7 @@ function LinkRow({ link }: { link: Link }) {
 								variant="ghost"
 								size="icon"
 								className="h-8 w-8"
+								onClick={(e) => e.stopPropagation()}
 							>
 								<MoreVertical className="h-4 w-4" />
 								<span className="sr-only">Open menu</span>
@@ -237,32 +249,43 @@ function LinkRow({ link }: { link: Link }) {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
 							<DropdownMenuItem
-								onClick={() =>
-									window.open(`https://${shortUrl}`, "_blank")
-								}
+								onClick={(e) => {
+									e.stopPropagation();
+									window.open(
+										`https://${shortUrl}`,
+										"_blank",
+									);
+								}}
 								className="cursor-pointer"
 							>
 								<ExternalLink className="mr-2 h-4 w-4" />
 								Open short link
 							</DropdownMenuItem>
 							<DropdownMenuItem
-								onClick={() =>
-									copyToClipboard(`https://${shortUrl}`)
-								}
+								onClick={(e) => {
+									e.stopPropagation();
+									copyToClipboard(`https://${shortUrl}`);
+								}}
 								className="cursor-pointer"
 							>
 								<Copy className="mr-2 h-4 w-4" />
 								Copy short URL
 							</DropdownMenuItem>
 							<DropdownMenuItem
-								onClick={() => copyToClipboard(link.toUrl)}
+								onClick={(e) => {
+									e.stopPropagation();
+									copyToClipboard(link.toUrl);
+								}}
 								className="cursor-pointer"
 							>
 								<Copy className="mr-2 h-4 w-4" />
 								Copy destination URL
 							</DropdownMenuItem>
 							<DropdownMenuItem
-								onClick={() => copyToClipboard(link.id)}
+								onClick={(e) => {
+									e.stopPropagation();
+									copyToClipboard(link.id);
+								}}
 								className="cursor-pointer"
 							>
 								<Copy className="mr-2 h-4 w-4" />
