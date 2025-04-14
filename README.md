@@ -10,7 +10,6 @@
 <br/>
 <br/>
 
-
 > _Note_: Unlike [HackKit](https://github.com/acmutsa/hackkit) and [ClubKit](https://github.com/acmutsa/clubkit), O is maintained primarily for internal use by ACM UTSA. The repository is able to be deployed however and used as reference! While we cannot garuntee support, if you are looking to deploy O for your orgainzation feel free to join our [Discord](https://go.acmutsa.org/projects-discord) to chat.
 
 ## About
