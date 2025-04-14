@@ -1,3 +1,5 @@
+"use server";
+
 import { authedAction } from "@/lib/server/safe-action";
 import { z } from "zod";
 import { linksDomains } from "@/o.config";
@@ -5,6 +7,7 @@ import { db } from "@/db";
 import { links as linksTable } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { revalidatePath } from "next/cache";
 
 export const createLink = authedAction
 	.schema(
@@ -17,12 +20,13 @@ export const createLink = authedAction
 					message:
 						"Slug must contain only letters, numbers, underscores, and dashes",
 				})
-				.transform((s) => s.toLowerCase()),
+				.transform(async (s) => s.toLowerCase()),
 			host: z.enum(linksDomains),
+			toUrl: z.string().url(),
 		}),
 	)
 	.action(async ({ ctx: { session }, parsedInput }) => {
-		const { slug, host } = parsedInput;
+		const { slug, host, toUrl } = parsedInput;
 		const { id: userID } = session.user;
 
 		const existingLink = await db.query.links.findFirst({
@@ -46,7 +50,10 @@ export const createLink = authedAction
 			host: host,
 			slug: slug as `/${string}`,
 			authorId: userID,
+			toUrl: toUrl,
 		});
+
+		revalidatePath("/links");
 
 		return {
 			success: true as const,

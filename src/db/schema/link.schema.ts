@@ -9,6 +9,7 @@ export const links = sqliteTable(
 		id: t.text("id").primaryKey(),
 		host: t.text("host").notNull().$type<(typeof linksDomains)[number]>(),
 		slug: t.text("slug").notNull().$type<`/${string}`>(),
+		toUrl: t.text("to_url").notNull(),
 		clicks: t.integer("clicks").notNull().default(0),
 		createdAt: t
 			.integer("created_at", { mode: "timestamp_ms" })
