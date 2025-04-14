@@ -95,15 +95,34 @@ function DomainsDropdown() {
 							params.domains.length === 0 ||
 							params.domains.includes(domain)
 						}
-						onCheckedChange={(checked) =>
-							setParams({
-								domains: checked
-									? [...new Set([...params.domains, domain])]
-									: params.domains.filter(
-											(d) => d !== domain,
-										),
-							})
-						}
+						onCheckedChange={(checked) => {
+							let newDomains;
+							if (checked) {
+								// Add domain to filter
+								const added = [
+									...new Set([...params.domains, domain]),
+								];
+								// If all domains are now selected, reset to empty array (select all)
+								newDomains =
+									added.length === linksDomains.length
+										? []
+										: added;
+							} else {
+								// Remove domain from filter
+								if (params.domains.length === 0) {
+									// If currently "all" are selected, removing one means selecting all *others*
+									newDomains = linksDomains.filter(
+										(d) => d !== domain,
+									);
+								} else {
+									// Otherwise, just remove the specific domain
+									newDomains = params.domains.filter(
+										(d) => d !== domain,
+									);
+								}
+							}
+							setParams({ domains: newDomains });
+						}}
 					>
 						{domain}
 					</DropdownMenuCheckboxItem>

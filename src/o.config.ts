@@ -1,6 +1,9 @@
 // NOTE: This is imported on both the client and server. Do not add sensitive information here.
 
-export const linksDomains = ["go.acmutsa.org", "go.rowdyhacks.org"] as const;
+export const linksDomains = [
+	"go.acmutsa.org",
+	"go.rowdyhacks.org",
+] as const satisfies string[];
 
 type SuborgConfig = Record<
 	string,

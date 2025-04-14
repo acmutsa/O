@@ -1,5 +1,4 @@
 import { sqliteTable, index } from "drizzle-orm/sqlite-core";
-import { linksDomains } from "@/o.config";
 import { relations, sql } from "drizzle-orm";
 import { user } from "./user.schema";
 
@@ -7,8 +6,8 @@ export const links = sqliteTable(
 	"links",
 	(t) => ({
 		id: t.text("id").primaryKey(),
-		host: t.text("host").notNull().$type<(typeof linksDomains)[number]>(),
-		slug: t.text("slug").notNull().$type<`/${string}`>(),
+		host: t.text("host").notNull(),
+		slug: t.text("slug").notNull(),
 		toUrl: t.text("to_url").notNull(),
 		clicks: t.integer("clicks").notNull().default(0),
 		createdAt: t
