@@ -13,6 +13,7 @@ import {
 	Settings2,
 	SquareTerminal,
 	Home,
+	Link as LinkIcon,
 } from "lucide-react";
 
 import { NavMain } from "./sections/main";
@@ -48,6 +49,11 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
 			name: "Meetings",
 			url: "/meet",
 			icon: AudioWaveform,
+		},
+		{
+			name: "Links",
+			url: "/links",
+			icon: LinkIcon,
 		},
 		{
 			name: "Directory",

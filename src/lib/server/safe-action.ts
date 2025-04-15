@@ -9,7 +9,7 @@ import { getSession } from "./auth";
 
 const actionClient = createSafeActionClient();
 
-export const userAction = actionClient.use(async ({ next }) => {
+export const authedAction = actionClient.use(async ({ next }) => {
 	const session = await getSession();
 	if (!session) {
 		throw new Error("Unauthorized");

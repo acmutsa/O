@@ -10,6 +10,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -45,8 +46,10 @@ export default async function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${calsans.variable} antialiased`}
 			>
-				{children}
-				<Toaster />
+				<NuqsAdapter>
+					{children}
+					<Toaster />
+				</NuqsAdapter>
 			</body>
 		</html>
 	);
