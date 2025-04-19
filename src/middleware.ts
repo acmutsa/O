@@ -19,6 +19,10 @@ export async function middleware(req: NextRequest) {
 	const { pathname, hostname } = req.nextUrl;
 	const isDev = process.env.NODE_ENV !== "production";
 
+	if (pathname === "/sign-in") {
+		return NextResponse.next();
+	}
+
 	// --- 1. Handle Golinks FIRST ---
 	const isLinkDomainRequest = (linksDomains as readonly string[]).includes(
 		hostname,
