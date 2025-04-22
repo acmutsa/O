@@ -2,9 +2,11 @@
 "use server";
 
 import { count, and, eq, db } from "@/db";
-import { meetingInvites } from "@/db/schema";
+import { meeting, meetingInvites } from "@/db/schema";
 import { userAction } from "@/lib/safe-action";
 import z from "zod";
+import { createSelectSchema } from 'drizzle-zod';
+import { InferSafeActionFnResult } from "next-safe-action";
 
 const MeetingIDSchema = z.object({
   meetingID: z.string()
@@ -27,6 +29,32 @@ export const getMeetingDetails = userAction
     return fetchedMeeting;
   });
 
+type MeetingDetailsTest = InferSafeActionFnResult<typeof getMeetingDetails>["data"];
+
+export const getMeetingDetailsTest = userAction
+  .action(async () => {
+    const data: MeetingDetailsTest = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+            meetingID: "1",
+            description: "Test meeting description",
+            creatorID: "1",
+            title: "Test meeting title",
+            rangeStart: new Date(),
+            rangeEnd: new Date(),
+            startTime: new Date(),
+            endTime: new Date(),
+            showAttendees: true,
+            location: "123 Place",
+            meetingLinks: ["https://acmutsa.org, https://youtube.com"]
+          }
+        );
+      }, 3000);
+    });
+
+    return data;
+  });
+
 export const getAttendeeCount = userAction
   .schema(MeetingIDSchema)
   .action(async ({ parsedInput: { meetingID } }) => {
@@ -38,13 +66,28 @@ export const getAttendeeCount = userAction
           eq(meetingInvites.hasAccepted, true)
         )
       );
+    
+    return data;
+  });
+
+type AttendeeCountTest = InferSafeActionFnResult<typeof getAttendeeCount>["data"];
+
+export const getAttendeeCountTest = userAction
+  .action(async () => {
+    const data: AttendeeCountTest = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([{ count: 1 }])
+      }, 3000);
+    });
+
+    return data;
   });
 
 // For previewing (showing images) of the first [previewLimit] attendees of the meeting
 export const getAttendeesImages = userAction
   .schema(PreviewLimitSchema)
   .action(async ({ parsedInput: { meetingID, previewLimit } }) => {
-    const data = db.query.meetingInvites.findMany({
+    const data = await db.query.meetingInvites.findMany({
       where: (meetingInvites, { eq, and }) => and(eq(meetingInvites.meetingID, meetingID), eq(meetingInvites.hasAccepted, true)),
       columns: {},
       with: {
@@ -61,10 +104,28 @@ export const getAttendeesImages = userAction
     return data;
   })
 
+type AttendeesImagesTest = InferSafeActionFnResult<typeof getAttendeesImages>["data"];
+
+export const getAttendeesImagesTest = userAction
+  .action(async () => {
+    const data: AttendeesImagesTest = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([{
+          user: {
+            id: "1",
+            image: null
+          }
+        }]);
+      }, 3000);
+    });
+
+    return data;
+  });
+
 export const getAllAttendees = userAction
   .schema(MeetingIDSchema)
   .action(async ({ parsedInput: { meetingID } }) => {
-    const data = db.query.meetingInvites.findMany({
+    const data = await db.query.meetingInvites.findMany({
       where: (meetingInvites, { eq, and }) => and(eq(meetingInvites.meetingID, meetingID), eq(meetingInvites.hasAccepted, true)),
       columns: {},
       with: {
@@ -90,6 +151,32 @@ export const getAllAttendees = userAction
         }
       }
     })
+
+    return data;
+  });
+
+  
+type AttendeesTest = InferSafeActionFnResult<typeof getAllAttendees>["data"];
+
+export const getAllAttendeesTest = userAction
+  .action(async () => {
+    const data: AttendeesTest = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([{
+          user: {
+            id: "1",
+            firstName: "John",
+            lastName: "Doe",
+            image: null,
+            userToPositions: [{
+              position: {
+                name: "Officer"
+              }
+            }]
+          }
+        }]);
+      }, 3000);
+    });
 
     return data;
   });

@@ -1,7 +1,5 @@
 "use client";
 
-import { db } from "@/db";
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,9 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAction } from "next-safe-action/hooks";
 import { getAllAttendees } from "@/actions/meetings";
 
-// For using a Dialog to display components
-// Created as a client component for lazy loading
-export default function AllAttendees({ meetingID }: { meetingID: string }) {
+export function AllAttendees({ meetingID }: { meetingID: string }) {
   const { 
     result: { 
       data: attendees 

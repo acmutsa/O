@@ -1,29 +1,31 @@
-import { db, eq } from "@/db";
-import { meeting, meetingInvites } from "@/db/schema";
-import { getUser } from "@/db/functions";
+import { SquareArrowOutUpRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getUserFromSession } from "@/actions/auth";
-import { getMeetingDetails } from "@/actions/meetings";
+import { getMeetingDetails, getMeetingDetailsTest } from "@/actions/meetings";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: Promise<{ meeting_id: string }> }) {
   const { meeting_id: meetingID } = await params;
-  const fetchedMeeting = await getMeetingDetails({ meetingID });
+  // const meetingResult = await getMeetingDetails({ meetingID });
+
+  const meetingResult = await getMeetingDetailsTest();
   
   // If there is no meeting found
-  if (!fetchedMeeting?.data)
+  if (!meetingResult?.data) {
+    console.log("data was not found.");
     notFound();
+  }
 
-  const { data: meeting } = fetchedMeeting;
-
+  const { data: meeting } = meetingResult;
   const user = await getUserFromSession();
   
   return (
     <div>
       { 
         user?.data?.user.id === meetingID && 
-        <div>
-          You are admin!
-        </div>
+        <Link href="">
+          <SquareArrowOutUpRight />
+        </Link>
       }
       {
         meeting.showAttendees &&
