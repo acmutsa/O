@@ -5,7 +5,10 @@ export default async function Page() {
 		process.env.SIMPLE_FIN_KEY!,
 	);
 
-	const response = await fetch(url, {
+	const twoWeeksAgo = Math.floor(
+		(Date.now() - 14 * 24 * 60 * 60 * 1000) / 1000,
+	);
+	const response = await fetch(`${url}?start-date=${twoWeeksAgo}`, {
 		headers: {
 			Authorization: `Basic ${btoa(`${username}:${password}`)}`,
 		},
@@ -14,7 +17,9 @@ export default async function Page() {
 
 	return (
 		<div>
-			<pre>{data}</pre>
+			<pre className="whitespace-pre-wrap">
+				{JSON.stringify(JSON.parse(data), null, 2)}
+			</pre>
 		</div>
 	);
 }
