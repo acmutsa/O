@@ -2,11 +2,13 @@
 
 import defaultProfilePicture from "@/img/default-profile-picture.jpg";
 import Image from "next/image";
-import { getAttendeesImages, getAttendeeCount, getAttendeeCountTest, getAttendeesImagesTest } from "@/actions/meetings";
+import { getAttendeesImages, getAttendeeCount, getAttendeeCountTest, getAttendeesImagesTest, getMeetingCreatorTest } from "@/actions/meetings";
 import { AllAttendees } from "./client";
 import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation";
+import { toast } from "sonner";
 
-export default async function Attendees({ meetingID, previewLimit }: { meetingID: string, previewLimit: number }) {
+export async function Attendees({ meetingID, previewLimit }: { meetingID: string, previewLimit: number }) {
   // const attendeeImagesResult = await getAttendeesImages({ meetingID, previewLimit });
   // const attendeeCountResult = await getAttendeeCount({ meetingID });
 
@@ -18,10 +20,12 @@ export default async function Attendees({ meetingID, previewLimit }: { meetingID
   const remainingAttendees = attendeeCount - previewLimit;
   
   return (
-    <div className="rounded-md border-slate-400 p-4">
-      <h2 className="text-lg">Attendees</h2>
-      <h3 className="text-lg rounded-full bg-black">{attendeeCount}</h3>
-      <Separator className="my-2"/>
+    <div className="border border-slate-300 p-4 rounded-md">
+      <div className="flex items-center gap-2.5">
+        <h2 className="inline font-bold text-xl">Attendees</h2>
+        <div className="size-8 flex justify-center items-center text-lg font-bold bg-black text-white rounded-full">{attendeeCount}</div>
+      </div>
+      <Separator className="my-4"/>
       <div className="flex justify-between items-end">
         <div className="w-fit flex justify-between items-center gap-2">
           {
@@ -45,6 +49,50 @@ export default async function Attendees({ meetingID, previewLimit }: { meetingID
         </div>
         <AllAttendees meetingID={meetingID}/>
       </div>
+    </div>
+  );
+}
+
+export async function MeetingCreator({ meetingID }: { meetingID: string }) {
+  const meetingCreatorResult = await getMeetingCreatorTest();
+
+  if (!meetingCreatorResult?.data) {
+    toast.error("Could not fetch meeting creator data.");
+    return;
+  }
+
+  const { data: { creator: meetingCreator } } = meetingCreatorResult;
+  const meetingCreatorPositions: string[] = meetingCreator.userToPositions.map((up) => up.position.name);
+
+  return (
+    <div className="flex items-center gap-4">
+      <Image
+        src={meetingCreator.image || defaultProfilePicture}
+        alt={`${meetingCreator.firstName} ${meetingCreator.lastName}'s Profile Picture`}
+        width={50}
+        height={50}
+        className="rounded-full object-cover"
+      />
+      <div className="truncate flex-1 flex flex-col gap-1.5">
+        <h3 className="font-bold text-lg">{`${meetingCreator.firstName} ${meetingCreator.lastName}`}</h3>
+        <span className="italic font-[400]">{meetingCreatorPositions.join(", ")}</span>
+      </div>
+    </div>
+  );
+}
+
+export async function Meeting() {
+  return (
+    <div>
+      
+    </div>
+  );
+}
+
+export async function MeetingLinks() {
+  return (
+    <div className="border border-slate-300 rounded-md p-4">
+      <h2>Meeting Link(s)</h2>
     </div>
   );
 }

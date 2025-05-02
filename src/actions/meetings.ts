@@ -8,6 +8,12 @@ import z from "zod";
 import { createSelectSchema } from 'drizzle-zod';
 import { InferSafeActionFnResult } from "next-safe-action";
 
+const testMeetingDescription = `
+  Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+  Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+`;
+
 const MeetingIDSchema = z.object({
   meetingID: z.string()
 });
@@ -29,15 +35,15 @@ export const getMeetingDetails = userAction
     return fetchedMeeting;
   });
 
-type MeetingDetailsTest = InferSafeActionFnResult<typeof getMeetingDetails>["data"];
+export type MeetingDetails = InferSafeActionFnResult<typeof getMeetingDetails>["data"];
 
 export const getMeetingDetailsTest = userAction
   .action(async () => {
-    const data: MeetingDetailsTest = await new Promise((resolve) => {
+    const data: MeetingDetails = await new Promise((resolve) => {
       setTimeout(() => {
         resolve({
             meetingID: "1",
-            description: "Test meeting description",
+            description: testMeetingDescription,
             creatorID: "1",
             title: "Test meeting title",
             rangeStart: new Date(),
@@ -49,8 +55,72 @@ export const getMeetingDetailsTest = userAction
             meetingLinks: ["https://acmutsa.org, https://youtube.com"]
           }
         );
-      }, 3000);
+      }, 1500);
     });
+
+    return data;
+  });
+
+export const getMeetingCreator = userAction
+  .schema(MeetingIDSchema)
+  .action(async ({ parsedInput: { meetingID } }) => {
+    const fetchedMeetingCreator = await db.query.meeting.findFirst({
+      where: (meeting, { eq }) => eq(meeting.meetingID, meetingID),
+      columns: {},
+      with: {
+        creator: {
+          columns: {
+            firstName: true,
+            lastName: true,
+            image: true
+          },
+          with: {
+            userToPositions: {
+              columns: {},
+              with: {
+                position: {
+                  columns: {
+                    name: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    return fetchedMeetingCreator;
+  });
+
+export type MeetingCreator = InferSafeActionFnResult<typeof getMeetingCreator>["data"];
+
+export const getMeetingCreatorTest = userAction
+  .action(async () => {
+    const data: MeetingCreator = await new Promise((resolve) => {
+      setTimeout(() => resolve({
+        creator: {
+          firstName: "First",
+          lastName: "Last",
+          image: null,
+          userToPositions: [{
+            position: {
+              name: "ACM Projects Officer"
+            }
+          },
+          {
+            position: {
+              name: "RowdyHacks Director"
+            }
+          },
+          {
+            position: {
+              name: "ICPC Director"
+            }
+          }]
+        }
+      }), 1500);
+    })
 
     return data;
   });
@@ -70,14 +140,14 @@ export const getAttendeeCount = userAction
     return data;
   });
 
-type AttendeeCountTest = InferSafeActionFnResult<typeof getAttendeeCount>["data"];
+export type AttendeeCount = InferSafeActionFnResult<typeof getAttendeeCount>["data"];
 
 export const getAttendeeCountTest = userAction
   .action(async () => {
-    const data: AttendeeCountTest = await new Promise((resolve) => {
+    const data: AttendeeCount = await new Promise((resolve) => {
       setTimeout(() => {
         resolve([{ count: 1 }])
-      }, 3000);
+      }, 1500);
     });
 
     return data;
@@ -104,11 +174,11 @@ export const getAttendeesImages = userAction
     return data;
   })
 
-type AttendeesImagesTest = InferSafeActionFnResult<typeof getAttendeesImages>["data"];
+export type AttendeesImages = InferSafeActionFnResult<typeof getAttendeesImages>["data"];
 
 export const getAttendeesImagesTest = userAction
   .action(async () => {
-    const data: AttendeesImagesTest = await new Promise((resolve) => {
+    const data: AttendeesImages = await new Promise((resolve) => {
       setTimeout(() => {
         resolve([{
           user: {
@@ -116,7 +186,7 @@ export const getAttendeesImagesTest = userAction
             image: null
           }
         }]);
-      }, 3000);
+      }, 1500);
     });
 
     return data;
@@ -156,11 +226,11 @@ export const getAllAttendees = userAction
   });
 
   
-type AttendeesTest = InferSafeActionFnResult<typeof getAllAttendees>["data"];
+export type Attendees = InferSafeActionFnResult<typeof getAllAttendees>["data"];
 
 export const getAllAttendeesTest = userAction
   .action(async () => {
-    const data: AttendeesTest = await new Promise((resolve) => {
+    const data: Attendees = await new Promise((resolve) => {
       setTimeout(() => {
         resolve([{
           user: {
@@ -175,7 +245,7 @@ export const getAllAttendeesTest = userAction
             }]
           }
         }]);
-      }, 3000);
+      }, 1500);
     });
 
     return data;

@@ -33,9 +33,9 @@ export function AllAttendees({ meetingID }: { meetingID: string }) {
           if (!hasSucceeded)
             execute({ meetingID })
         }}
-        className="flex gap-3"
+        className="flex font-[600] gap-3 bg-slate-300 text-slate-600 px-5 py-3 rounded-md"
       >
-        All Attendees
+        Show All
         <ChevronRight />
       </DialogTrigger>
       <DialogContent>
