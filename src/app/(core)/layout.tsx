@@ -38,7 +38,11 @@ export default async function Layout({
 	return (
 		<SidebarProvider>
 			<div className="flex min-h-screen w-full">
-				<AppSidebar user={sideBarUser} variant="inset" />
+				<AppSidebar
+					user={sideBarUser}
+					showAdmin={session.user.role === "admin"}
+					variant="inset"
+				/>
 				<SidebarInset className="flex-1 px-8 py-2">
 					<Header />
 					<main className="flex-1 pt-5">{children}</main>

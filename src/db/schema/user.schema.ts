@@ -17,6 +17,10 @@ export const user = sqliteTable("user", (t) => ({
 	emailVerified: t.integer("email_verified", { mode: "boolean" }).notNull(),
 	image: t.text("image"),
 	updatedAt: t.integer("updated_at", { mode: "timestamp" }).notNull(),
+	role: t
+		.text("role", { enum: ["admin", "user"] })
+		.notNull()
+		.default("user"),
 }));
 
 export const userRelations = relations(user, ({ one, many }) => ({

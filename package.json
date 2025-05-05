@@ -13,7 +13,7 @@
 		"migrations:drop": "drizzle-kit drop",
 		"migrations:check": "drizzle-kit check",
 		"snapshot-up": "drizzle-kit up",
-		"db-push": "drizzle-kit push",
+		"db:push": "drizzle-kit push",
 		"studio": "drizzle-kit studio",
 		"format-check": "prettier --check .",
 		"format": "prettier --write ."

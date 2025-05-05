@@ -3,6 +3,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
+import { z } from "zod";
 
 import { db } from "@/db";
 
@@ -62,6 +63,14 @@ export const auth = betterAuth({
 			pronouns: {
 				type: "string",
 				nullable: true,
+			},
+			role: {
+				type: "string",
+				defaultValue: "user",
+				validator: {
+					input: z.enum(["user", "admin"]),
+					output: z.enum(["user", "admin"]),
+				},
 			},
 		},
 		changeEmail: {
