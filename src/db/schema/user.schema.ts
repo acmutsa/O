@@ -2,6 +2,7 @@ import { sqliteTable, primaryKey } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import { meetingInvites, meeting } from "../schema";
 import { links } from "./link.schema";
+import { transaction } from "./finance.schema";
 
 export const user = sqliteTable("user", (t) => ({
 	id: t.text("id").primaryKey(),
@@ -67,3 +68,14 @@ export const usersToPositionsRelations = relations(
 		}),
 	}),
 );
+
+export const userToTransactions = sqliteTable("user_to_transactions", (t) => ({
+	userId: t
+		.text("user_id")
+		.notNull()
+		.references(() => user.id),
+	transactionId: t
+		.text("transaction_id")
+		.notNull()
+		.references(() => transaction.id),
+}));

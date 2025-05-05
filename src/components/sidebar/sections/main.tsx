@@ -33,6 +33,11 @@ export function NavMain({
 		name: string;
 		url: string;
 		icon: LucideIcon;
+		subItems?: {
+			name: string;
+			url: string;
+			icon: LucideIcon;
+		}[];
 	}[];
 }) {
 	const { isMobile } = useSidebar();

@@ -13,13 +13,13 @@ export default async function Page() {
 			Authorization: `Basic ${btoa(`${username}:${password}`)}`,
 		},
 	});
-	const data = await response.text();
+	const data = (await response.text()).replace(/\\"/g, '"');
+	// console.log(JSON.stringify(data));
+	console.log(data);
 
 	return (
 		<div>
-			<pre className="whitespace-pre-wrap">
-				{JSON.stringify(JSON.parse(data), null, 2)}
-			</pre>
+			<pre>{data}</pre>
 		</div>
 	);
 }
