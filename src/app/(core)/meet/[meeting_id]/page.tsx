@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Attendees, MeetingCreator, MeetingDateTimeLocation, MeetingLinks } from "./server";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/server/auth";
 import { headers } from "next/headers";
 import { db } from "@/db";
 import { getMeetingDetails, getMeetingDetailsTest, Meeting } from "@/db/functions";
