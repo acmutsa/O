@@ -1,19 +1,19 @@
 /* Any server actions related to auth should be in this file. DO NOT REMOVE THE "use server" */
 "use server";
 
-import { userAction } from "@/lib/safe-action";
-import { auth } from "@/lib/auth";
-import { returnValidationErrors } from "next-safe-action";
-import z from "zod";
-// this is mainly an example of a server action declaration
-export const signUserOut = userAction.action(async ({ ctx: { headers } }) => {
-  const success = await auth.api.signOut({
-    headers,
-  });
+import { authedAction } from "@/lib/server/safe-action";
+import { auth } from "@/lib/server/auth";
+import { headers } from "next/headers";
 
-  return {
-    success,
-  };
+// this is mainly an example of a server action declaration
+export const signUserOut = authedAction.action(async ({ ctx: { session } }) => {
+	const success = await auth.api.signOut({
+		headers: await headers(),
+	});
+
+	return {
+		success,
+	};
 });
 
 export const getUserFromSession = userAction.action(async ({ ctx: { userData } }) => {  

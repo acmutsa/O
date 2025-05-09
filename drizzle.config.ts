@@ -7,14 +7,14 @@ it is also used for anything related to drizzle-kit or running migrations.
 import { config } from "dotenv";
 import { defineConfig } from "drizzle-kit";
 
-config({ path: "../../.env" });
+config({ path: "./.env" });
 
 export default defineConfig({
-  schema: "./schema.ts",
-  out: "./migrations",
-  dialect: "turso",
-  dbCredentials: {
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN!,
-  },
+	schema: "src/db/schema/index.ts",
+	out: "src/db/migrations",
+	dialect: "turso",
+	dbCredentials: {
+		url: process.env.TURSO_DATABASE_URL!,
+		authToken: process.env.TURSO_AUTH_TOKEN!,
+	},
 });
