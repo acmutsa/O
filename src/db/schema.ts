@@ -1,5 +1,6 @@
-import { sql, relations } from "drizzle-orm";
+import { sql, relations, InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text, primaryKey } from "drizzle-orm/sqlite-core";
+import { z } from "zod";
 
 /*
   * This file defines the database schema for the application using
@@ -31,7 +32,6 @@ export const userRelations = relations(user, ({ one,many }) => ({
   meetingsCreated:many(meeting),
   meetingInvites: many(meetingInvites),
 }));
-
 
 export const position = sqliteTable("position", {
   positionID: integer("positionID").primaryKey(),

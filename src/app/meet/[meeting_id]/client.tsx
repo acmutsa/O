@@ -11,30 +11,17 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import defaultProfilePicture from "@/img/default-profile-picture.jpg";
 import { Badge } from "@/components/ui/badge";
-import { useAction } from "next-safe-action/hooks";
 import { getAllAttendees } from "@/actions/meetings";
+import { Attendee } from "./server";
 
-export function AllAttendees({ meetingID }: { meetingID: string }) {
-  const { 
-    result: { 
-      data: attendees 
-    }, 
-    execute, 
-    isExecuting, 
-    hasSucceeded 
-  } = useAction(getAllAttendees);
+type AllAttendeesProps = {
+  attendees: Attendee[]
+}
 
+export function AllAttendees({ attendees }: AllAttendeesProps) {
   return (
     <Dialog>
-      <DialogTrigger 
-        disabled={isExecuting}
-        onClick={() => {
-          // Data fetching will only run once
-          if (!hasSucceeded)
-            execute({ meetingID })
-        }}
-        className="flex font-[600] gap-3 bg-slate-300 text-slate-600 px-5 py-3 rounded-md"
-      >
+      <DialogTrigger className="flex font-[600] gap-3 bg-slate-300 text-slate-600 px-5 py-3 rounded-md">
         Show All
         <ChevronRight />
       </DialogTrigger>
@@ -46,21 +33,21 @@ export function AllAttendees({ meetingID }: { meetingID: string }) {
           attendees &&
           <div>
             {
-              attendees?.map(({ user }) => (
-                <div>
-                  <h1>{`${user.firstName} ${user.lastName}`}</h1>
+              attendees?.map((attendee) => (
+                <div key={attendee.id}>
+                  <h1>{`${attendee.firstName} ${attendee.lastName}`}</h1>
                   <Image
-                    src={user.image || defaultProfilePicture}
-                    alt={`${user.firstName} ${user.lastName}'s Profile Picture`}
+                    src={attendee.image || defaultProfilePicture}
+                    alt={`${attendee.firstName} ${attendee.lastName}'s Profile Picture`}
                     width={50}
                     height={50}
                     className="object-cover rounded-full"
                   />
-                  <div>
+                  <div className="flex flex-row gap-1.5">
                     {
-                      user.userToPositions.map(({ position }) => (
-                        <Badge>
-                          {position.name}
+                      attendee.positions.map((position, index) => (
+                        <Badge key={index} className="rounded-full">
+                          {position}
                         </Badge>
                       ))
                     }
@@ -69,10 +56,6 @@ export function AllAttendees({ meetingID }: { meetingID: string }) {
               ))
             }
           </div>
-        }
-        {
-          isExecuting && 
-          <h1>Loading...</h1>
         }
       </DialogContent>
     </Dialog>

@@ -5,65 +5,66 @@ import Image from "next/image";
 import { getAttendeesImages, getAttendeeCount, getAttendeeCountTest, getAttendeesImagesTest, getMeetingCreatorTest } from "@/actions/meetings";
 import { AllAttendees } from "./client";
 import { Separator } from "@/components/ui/separator";
-import { notFound } from "next/navigation";
 import { toast } from "sonner";
+import { Calendar, Clock, MapPin } from "lucide-react";
+import { isSameDay, format } from "date-fns";
+import Link from "next/link";
 
-export async function Attendees({ meetingID, previewLimit }: { meetingID: string, previewLimit: number }) {
-  // const attendeeImagesResult = await getAttendeesImages({ meetingID, previewLimit });
-  // const attendeeCountResult = await getAttendeeCount({ meetingID });
+export type Attendee = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  image: string | null;
+  positions: string[];
+};
 
-  const attendeeImagesResult = await getAttendeesImagesTest();
-  const attendeeCountResult = await getAttendeeCountTest();
-  
-  const [{ count: attendeeCount }] = attendeeCountResult?.data || [{ count: 0 }];
-  const attendeeImages = attendeeImagesResult?.data;
-  const remainingAttendees = attendeeCount - previewLimit;
+type AttendeesProps = {
+  attendees: Attendee[];
+  previewLimit: number;
+};
+
+export async function Attendees({ attendees, previewLimit }: AttendeesProps) {
+  const remainingAttendeesCount = attendees.length - previewLimit;
   
   return (
     <div className="border border-slate-300 p-4 rounded-md">
       <div className="flex items-center gap-2.5">
         <h2 className="inline font-bold text-xl">Attendees</h2>
-        <div className="size-8 flex justify-center items-center text-lg font-bold bg-black text-white rounded-full">{attendeeCount}</div>
+        <div className="size-8 flex justify-center items-center text-lg font-bold bg-black text-white rounded-full">{attendees.length}</div>
       </div>
       <Separator className="my-4"/>
       <div className="flex justify-between items-end">
         <div className="w-fit flex justify-between items-center gap-2">
           {
-            (attendeeImages && attendeeImages.length > 0) && attendeeImages.map(({ user }) => (
+            remainingAttendeesCount && attendees.slice(0, previewLimit).map((attendee) => (
               <Image
-                key={user.id}
-                src={user.image || defaultProfilePicture}
-                alt="A profile picture"
+                key={attendee.id}
+                src={attendee.image || defaultProfilePicture}
+                alt={`${attendee.firstName} ${attendee.lastName}'s Profile Picture`}
                 width={50}
                 height={50}
-                className="rounded-full object-cover"
+                className="shadow-md object-cover rounded-full"
               />
             ))
           }
           {
-            remainingAttendees >= 0 &&
-            <div className="h-[50px] w-[50px] bg-gray-400 rounded-full">
-              + {remainingAttendees}
+            remainingAttendeesCount > 0 &&
+            <div className="h-[50px] w-[50px] bg-gray-400 font-[600] text-slate-700 flex justify-center items-center shadow-md rounded-full">
+              +{remainingAttendeesCount}
             </div>
           }
         </div>
-        <AllAttendees meetingID={meetingID}/>
+        <AllAttendees attendees={attendees}/>
       </div>
     </div>
   );
 }
 
-export async function MeetingCreator({ meetingID }: { meetingID: string }) {
-  const meetingCreatorResult = await getMeetingCreatorTest();
+type MeetingCreatorProps = {
+  meetingCreator: Attendee
+};
 
-  if (!meetingCreatorResult?.data) {
-    toast.error("Could not fetch meeting creator data.");
-    return;
-  }
-
-  const { data: { creator: meetingCreator } } = meetingCreatorResult;
-  const meetingCreatorPositions: string[] = meetingCreator.userToPositions.map((up) => up.position.name);
-
+export async function MeetingCreator({ meetingCreator }: MeetingCreatorProps) {
   return (
     <div className="flex items-center gap-4">
       <Image
@@ -71,28 +72,81 @@ export async function MeetingCreator({ meetingID }: { meetingID: string }) {
         alt={`${meetingCreator.firstName} ${meetingCreator.lastName}'s Profile Picture`}
         width={50}
         height={50}
-        className="rounded-full object-cover"
+        className="shadow-md object-cover rounded-full"
       />
       <div className="truncate flex-1 flex flex-col gap-1.5">
         <h3 className="font-bold text-lg">{`${meetingCreator.firstName} ${meetingCreator.lastName}`}</h3>
-        <span className="italic font-[400]">{meetingCreatorPositions.join(", ")}</span>
+        <span className="italic font-[400]">{meetingCreator.positions.join(", ")}</span>
       </div>
     </div>
   );
 }
 
-export async function Meeting() {
+type MeetingDateTimeLocationProps = {
+  rangeStart: Date,
+  rangeEnd: Date
+  startTime: Date,
+  endTime: Date,
+  location: string,
+  timeFormat: string,
+  dateFormat: string
+};
+
+export async function MeetingDateTimeLocation({ rangeStart, rangeEnd, startTime, endTime, location, timeFormat, dateFormat }: MeetingDateTimeLocationProps) {
+  const isMeetingRangeDifferentDays = !isSameDay(rangeStart, rangeEnd);
+  
   return (
-    <div>
-      
+    <div className="text-slate-600 flex flex-col gap-5">
+      <div className="flex items-center gap-3.5 font-[600]">
+        <div className="flex justify-center items-center text-white bg-black p-2.5 shadow-md rounded-md">
+          <Calendar size={28}/>
+        </div>
+        <Separator orientation="vertical"/>
+        <span>{`${format(rangeStart, dateFormat)}${isMeetingRangeDifferentDays ? ` - ${format(rangeEnd, dateFormat)}` : ""}`}</span>
+      </div>
+      <div className="flex items-center gap-3.5 font-[600]">
+        <div className="flex justify-center items-center text-white bg-black p-2.5 shadow-md rounded-md">
+          <Clock size={28}/>
+        </div>
+        <Separator orientation="vertical"/>
+        <span>{`${format(startTime, timeFormat)} - ${format(endTime, timeFormat)}`}</span>
+      </div>
+      <div className="flex items-center gap-3.5 font-[600]">
+        <div className="flex justify-center items-center text-white bg-black p-2.5 shadow-md rounded-md">
+          <MapPin size={28}/>
+        </div>
+        <Separator orientation="vertical"/>
+        <span>{location}</span>
+      </div>
     </div>
   );
 }
 
-export async function MeetingLinks() {
+type MeetingLinksProps = {
+  links: string[]
+};
+
+export async function MeetingLinks({ links }: MeetingLinksProps) {
   return (
     <div className="border border-slate-300 rounded-md p-4">
-      <h2>Meeting Link(s)</h2>
+      <h2 className="font-bold text-lg mb-3">Meeting Link(s)</h2>
+      {
+        links.length > 0 &&
+        <div className="flex flex-col gap-3">
+          {
+            links.map((link, index) => (
+              <Link
+                key={index}
+                href={link}
+                target="_blank"
+                className="text-blue-600 underline visited:text-purple-600"
+              >
+                {link}
+              </Link>
+            ))
+          }
+        </div>
+      }
     </div>
   );
 }
