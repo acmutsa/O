@@ -2,7 +2,6 @@
 
 import defaultProfilePicture from "@/img/default-profile-picture.jpg";
 import Image from "next/image";
-import { getAttendeesImages, getAttendeeCount, getAttendeeCountTest, getAttendeesImagesTest, getMeetingCreatorTest } from "@/actions/meetings";
 import { AllAttendees } from "./client";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";

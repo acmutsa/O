@@ -116,46 +116,40 @@ export default async function Page({ params }: { params: Promise<{ meeting_id: s
   const isAdmin = meetingResult.creator.id === userID;
   
   return (
-    <main className="px-4 py-8">
-      <div className="h-fit flex justify-center gap-1.5">
-        <div className="flex-1 flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h1 className="font-bold text-3xl">{meetingResult.title}</h1>
-            {
-              isAdmin || userID === "57ylfYzsqW3bCsSG6JOiNbefe2G7xBGq" && 
-              <Link href="/" className="flex items-center gap-4 font-[600] bg-black text-white px-7 py-3 rounded-md">
-                Edit
-                <SquareArrowOutUpRight />
-              </Link>
-            }
-          </div>
+    <div className="h-fit flex justify-center gap-10">
+      <div className="flex-1 flex flex-col gap-4">
+        <div className="flex justify-between items-center">
+          <h1 className="font-bold text-3xl">{meetingResult.title}</h1>
           {
-            (meetingResult.showAttendees || isAdmin) &&
-            <Attendees attendees={attendees} previewLimit={3}/>
+            isAdmin || userID === "57ylfYzsqW3bCsSG6JOiNbefe2G7xBGq" && 
+            <Link href="/" className="flex items-center gap-4 font-[600] bg-black text-white px-7 py-3 rounded-md">
+              Edit
+              <SquareArrowOutUpRight />
+            </Link>
           }
-          <MeetingDateTimeLocation
-            rangeStart={meetingResult.rangeStart}
-            rangeEnd={meetingResult.rangeEnd}
-            startTime={meetingResult.startTime || new Date()}
-            endTime={meetingResult.endTime || new Date()}
-            location={meetingResult.location || "Unknown"}
-            timeFormat="h:mm aa"
-            dateFormat="MMMM do, yyyy (ccc)"
-          />
-          <MeetingLinks links={meetingResult.meetingLinks || []}/>
         </div>
-        <Separator
-          orientation="vertical"
-          className="h-full mx-4"
+        {
+          (meetingResult.showAttendees || isAdmin) &&
+          <Attendees attendees={attendees} previewLimit={3}/>
+        }
+        <MeetingDateTimeLocation
+          rangeStart={meetingResult.rangeStart}
+          rangeEnd={meetingResult.rangeEnd}
+          startTime={meetingResult.startTime || new Date()}
+          endTime={meetingResult.endTime || new Date()}
+          location={meetingResult.location || "Unknown"}
+          timeFormat="h:mm aa"
+          dateFormat="MMMM do, yyyy (ccc)"
         />
-        <div className="flex-1 flex flex-col gap-4">
-          <h1 className="font-bold text-3xl">Details</h1>
-          <h2 className="font-bold text-lg">Author</h2>
-          <MeetingCreator meetingCreator={meetingCreator}/>
-          <h2 className="font-bold text-lg">About</h2>
-          <p className="font-[600] text-slate-600">{meetingResult.description}</p>
-        </div>
+        <MeetingLinks links={meetingResult.meetingLinks || []}/>
       </div>
-    </main>
+      <div className="flex-1 flex flex-col gap-4">
+        <h1 className="font-bold text-3xl">Details</h1>
+        <h2 className="font-bold text-lg">Author</h2>
+        <MeetingCreator meetingCreator={meetingCreator}/>
+        <h2 className="font-bold text-lg">About</h2>
+        <p className="font-[600] text-slate-600">{meetingResult.description}</p>
+      </div>
+    </div>
   );
 }

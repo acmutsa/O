@@ -19,7 +19,7 @@ export default async function LinksPage({
 }: {
 	searchParams: SearchParams;
 }) {
-	const params = await loadSearchParams(searchParams);
+	const params = loadSearchParams(searchParams);
 
 	const linksData = await db.query.links.findMany({
 		where: and(

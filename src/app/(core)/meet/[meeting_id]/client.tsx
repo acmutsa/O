@@ -11,7 +11,6 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import defaultProfilePicture from "@/img/default-profile-picture.jpg";
 import { Badge } from "@/components/ui/badge";
-import { getAllAttendees } from "@/actions/meetings";
 import { Attendee } from "./server";
 
 type AllAttendeesProps = {
