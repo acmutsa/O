@@ -98,9 +98,9 @@ export function getMeetingDetailsTest(): Meeting {
       }
     }],
     creator: {
-      id: "2",
-      firstName: "John",
-      lastName: "Doe",
+      id: "1",
+      firstName: "First",
+      lastName: "Last",
       image: null,
       userToPositions: [{
         position: {

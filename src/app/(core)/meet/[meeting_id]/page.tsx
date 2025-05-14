@@ -94,7 +94,35 @@ export default async function Page({ params }: { params: Promise<{ meeting_id: s
     firstName: "First",
     lastName: "Last",
     image: null,
-    positions: ["ACM Officer", "RowdyHacks Director", "ICPC Director"]
+    positions: ["ACM Projects Officer", "ICPC Director", "ACM Junior Officer", "HackKit Maintainer"]
+  },
+  {
+    id: "2",
+    firstName: "John",
+    lastName: "Doe",
+    image: null,
+    positions: ["ICPC Director"]
+  },
+  {
+    id: "3",
+    firstName: "Adam",
+    lastName: "Smith",
+    image: null,
+    positions: ["ACM Junior Officer"]
+  },
+  {
+    id: "4",
+    firstName: "Shawn",
+    lastName: "Tapp",
+    image: null,
+    positions: ["HackKit Maintainer"]
+  },
+  {
+    id: "5",
+    firstName: "Christian",
+    lastName: "Walker",
+    image: null,
+    positions: ["ACM Projects Officer", "HackKit Maintainer"]
   }];
 
   const { userToPositions: meetingCreatorToPositions, ...meetingCreatorRest } = meetingResult.creator;
@@ -122,7 +150,7 @@ export default async function Page({ params }: { params: Promise<{ meeting_id: s
           <h1 className="font-bold text-3xl">{meetingResult.title}</h1>
           {
             isAdmin || userID === "57ylfYzsqW3bCsSG6JOiNbefe2G7xBGq" && 
-            <Link href="/" className="flex items-center gap-4 font-[600] bg-black text-white px-7 py-3 rounded-md">
+            <Link href="/" className="flex items-center gap-4 font-[600] bg-black dark:bg-white text-white dark:text-black px-7 py-3 rounded-md">
               Edit
               <SquareArrowOutUpRight />
             </Link>
@@ -148,7 +176,7 @@ export default async function Page({ params }: { params: Promise<{ meeting_id: s
         <h2 className="font-bold text-lg">Author</h2>
         <MeetingCreator meetingCreator={meetingCreator}/>
         <h2 className="font-bold text-lg">About</h2>
-        <p className="font-[600] text-slate-600">{meetingResult.description}</p>
+        <p className="font-[600] text-slate-600 dark:text-gray-400">{meetingResult.description}</p>
       </div>
     </div>
   );

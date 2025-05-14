@@ -5,7 +5,7 @@ export function MeetingCreatorSkeleton() {
   return (
     <div className="flex items-center gap-4">
       <Skeleton className="size-[50px] rounded-full"/>
-      <div className="truncate flex-1 flex flex-col gap-1.5">
+      <div className="truncate flex-1 flex flex-col gap-2.5">
         <Skeleton className="w-28 h-6" />
         <Skeleton className="w-60 h-6" />
       </div>

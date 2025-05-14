@@ -4,10 +4,10 @@ import defaultProfilePicture from "@/img/default-profile-picture.jpg";
 import Image from "next/image";
 import { AllAttendees } from "./client";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { isSameDay, format } from "date-fns";
 import Link from "next/link";
+import { db } from "@/db";
 
 export type Attendee = {
   id: string;
@@ -17,6 +17,11 @@ export type Attendee = {
   positions: string[];
 };
 
+export type Position = {
+  positionID: number,
+  name: string
+}
+
 type AttendeesProps = {
   attendees: Attendee[];
   previewLimit: number;
@@ -24,18 +29,40 @@ type AttendeesProps = {
 
 export async function Attendees({ attendees, previewLimit }: AttendeesProps) {
   const remainingAttendeesCount = attendees.length - previewLimit;
+  // const positions = await db.query.position.findMany({
+  //   columns: {
+  //     description: false
+  //   }
+  // });
+
+  const positions: Position[] = [{
+    positionID: 1,
+    name: "ACM Projects Officer"
+  },
+  {
+    positionID: 2,
+    name: "ICPC Director"
+  },
+  {
+    positionID: 3,
+    name: "ACM Junior Officer"
+  },
+  {
+    positionID: 4,
+    name: "HackKit Maintainer"
+  }];
   
   return (
-    <div className="border border-slate-300 p-4 rounded-md">
+    <div className="border border-slate-300 dark:border-gray-700 p-4 rounded-md">
       <div className="flex items-center gap-2.5">
         <h2 className="inline font-bold text-xl">Attendees</h2>
-        <div className="size-8 flex justify-center items-center text-lg font-bold bg-black text-white rounded-full">{attendees.length}</div>
+        <div className="size-8 flex justify-center items-center text-lg font-bold bg-black dark:bg-white text-white dark:text-black rounded-full shadow-md">{attendees.length}</div>
       </div>
-      <Separator className="my-4"/>
+      <Separator className="my-4 dark:bg-gray-600"/>
       <div className="flex justify-between items-end">
         <div className="w-fit flex justify-between items-center gap-2">
           {
-            remainingAttendeesCount && attendees.slice(0, previewLimit).map((attendee) => (
+            attendees.slice(0, previewLimit).map((attendee) => (
               <Image
                 key={attendee.id}
                 src={attendee.image || defaultProfilePicture}
@@ -48,12 +75,16 @@ export async function Attendees({ attendees, previewLimit }: AttendeesProps) {
           }
           {
             remainingAttendeesCount > 0 &&
-            <div className="h-[50px] w-[50px] bg-gray-400 font-[600] text-slate-700 flex justify-center items-center shadow-md rounded-full">
+            <div className="size-[50px] bg-gray-400 font-[600] text-slate-700 flex justify-center items-center shadow-md rounded-full">
               +{remainingAttendeesCount}
             </div>
           }
         </div>
-        <AllAttendees attendees={attendees}/>
+        <AllAttendees
+          attendees={attendees}
+          positions={positions}
+          itemsPerPage={6}
+        />
       </div>
     </div>
   );
@@ -95,26 +126,26 @@ export async function MeetingDateTimeLocation({ rangeStart, rangeEnd, startTime,
   const isMeetingRangeDifferentDays = !isSameDay(rangeStart, rangeEnd);
   
   return (
-    <div className="text-slate-600 flex flex-col gap-5">
+    <div className="text-slate-600 dark:text-gray-400 flex flex-col gap-5">
       <div className="flex items-center gap-3.5 font-[600]">
-        <div className="flex justify-center items-center text-white bg-black p-2.5 shadow-md rounded-md">
+        <div className="flex justify-center items-center bg-black dark:bg-white text-white dark:text-black p-2.5 shadow-md rounded-md">
           <Calendar size={28}/>
         </div>
-        <Separator orientation="vertical"/>
+        <Separator orientation="vertical" className="dark:bg-gray-600" />
         <span>{`${format(rangeStart, dateFormat)}${isMeetingRangeDifferentDays ? ` - ${format(rangeEnd, dateFormat)}` : ""}`}</span>
       </div>
       <div className="flex items-center gap-3.5 font-[600]">
-        <div className="flex justify-center items-center text-white bg-black p-2.5 shadow-md rounded-md">
+        <div className="flex justify-center items-center bg-black dark:bg-white text-white dark:text-black p-2.5 shadow-md rounded-md">
           <Clock size={28}/>
         </div>
-        <Separator orientation="vertical"/>
+        <Separator orientation="vertical" className="dark:bg-gray-600" />
         <span>{`${format(startTime, timeFormat)} - ${format(endTime, timeFormat)}`}</span>
       </div>
       <div className="flex items-center gap-3.5 font-[600]">
-        <div className="flex justify-center items-center text-white bg-black p-2.5 shadow-md rounded-md">
+        <div className="flex justify-center items-center bg-black dark:bg-white text-white dark:text-black p-2.5 shadow-md rounded-md">
           <MapPin size={28}/>
         </div>
-        <Separator orientation="vertical"/>
+        <Separator orientation="vertical" className="dark:bg-gray-600" />
         <span>{location}</span>
       </div>
     </div>
@@ -127,7 +158,7 @@ type MeetingLinksProps = {
 
 export async function MeetingLinks({ links }: MeetingLinksProps) {
   return (
-    <div className="border border-slate-300 rounded-md p-4">
+    <div className="border border-slate-300 dark:border-gray-700 rounded-md p-4">
       <h2 className="font-bold text-lg mb-3">Meeting Link(s)</h2>
       {
         links.length > 0 &&
