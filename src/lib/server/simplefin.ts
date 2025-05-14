@@ -1,6 +1,37 @@
 import "server-only";
 
 import { db } from "@/db";
+import { betterFetch } from "@better-fetch/fetch";
+
+interface Transaction {
+	id: string;
+	posted: number; // Unix timestamp
+	amount: string; // String representation of a number
+	description: string;
+	payee: string;
+	memo: string;
+	transacted_at: number; // Unix timestamp
+}
+
+interface Organization {
+	domain: string;
+	name: string;
+	"sfin-url": string;
+	url: string;
+	id: string;
+}
+
+interface Account {
+	org: Organization;
+	id: string;
+	name: string;
+	currency: string; // e.g., "USD"
+	balance: string; // String representation of a number
+	"available-balance": string; // String representation of a number
+	"balance-date": number; // Unix timestamp
+	transactions: Transaction[];
+	holdings: any[]; // Might be able to be more explicit in the future
+}
 
 export function decodeSimpleFinKey(raw: string) {
 	const [scheme, rest] = raw.split("//");

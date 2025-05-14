@@ -14,6 +14,12 @@ import {
 	SquareTerminal,
 	Home,
 	Link as LinkIcon,
+	Users,
+	Building,
+	ListChecks,
+	Receipt,
+	CreditCard,
+	BadgeDollarSign,
 } from "lucide-react";
 
 import { NavMain } from "./sections/main";
@@ -86,6 +92,16 @@ export function AppSidebar({
 						name: "Admin",
 						url: "/admin",
 						icon: Settings2,
+						subItems: [
+							{
+								name: "Teams",
+								url: "/admin/teams",
+							},
+							{
+								name: "Logs",
+								url: "/admin/logs",
+							},
+						],
 					},
 				]
 			: []),
