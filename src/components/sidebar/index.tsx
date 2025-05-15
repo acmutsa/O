@@ -14,6 +14,12 @@ import {
 	SquareTerminal,
 	Home,
 	Link as LinkIcon,
+	Users,
+	Building,
+	ListChecks,
+	Receipt,
+	CreditCard,
+	BadgeDollarSign,
 } from "lucide-react";
 
 import { NavMain } from "./sections/main";
@@ -36,9 +42,14 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 		email: string;
 		avatar: string | null;
 	};
+	showAdmin?: boolean;
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+export function AppSidebar({
+	user,
+	showAdmin = false,
+	...props
+}: AppSidebarProps) {
 	const sections = [
 		{
 			name: "Home",
@@ -75,6 +86,25 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
 			url: "/inventory",
 			icon: GalleryVerticalEnd,
 		},
+		...(showAdmin
+			? [
+					{
+						name: "Admin",
+						url: "/admin",
+						icon: Settings2,
+						subItems: [
+							{
+								name: "Teams",
+								url: "/admin/teams",
+							},
+							{
+								name: "Logs",
+								url: "/admin/logs",
+							},
+						],
+					},
+				]
+			: []),
 	];
 
 	return (

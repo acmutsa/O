@@ -20,3 +20,11 @@ export const authedAction = actionClient.use(async ({ next }) => {
 		},
 	});
 });
+
+export const adminAction = actionClient.use(async ({ next }) => {
+	const session = await getSession();
+	if (!session || session.user.role !== "admin") {
+		throw new Error("Unauthorized");
+	}
+	return next({ ctx: { session } });
+});

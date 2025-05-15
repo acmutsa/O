@@ -2,6 +2,8 @@ import { sqliteTable, primaryKey } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import { meetingInvites, meeting } from "../schema";
 import { links } from "./link.schema";
+import { transaction } from "./finance.schema";
+import { userToCohorts } from "./team.schema";
 
 export const user = sqliteTable("user", (t) => ({
 	id: t.text("id").primaryKey(),
@@ -16,6 +18,10 @@ export const user = sqliteTable("user", (t) => ({
 	emailVerified: t.integer("email_verified", { mode: "boolean" }).notNull(),
 	image: t.text("image"),
 	updatedAt: t.integer("updated_at", { mode: "timestamp" }).notNull(),
+	role: t
+		.text("role", { enum: ["admin", "user"] })
+		.notNull()
+		.default("user"),
 }));
 
 export const userRelations = relations(user, ({ one, many }) => ({
@@ -23,6 +29,7 @@ export const userRelations = relations(user, ({ one, many }) => ({
 	meetingsCreated: many(meeting),
 	meetingInvites: many(meetingInvites),
 	links: many(links),
+	cohorts: many(userToCohorts),
 }));
 
 export const position = sqliteTable("position", (t) => ({
@@ -67,3 +74,14 @@ export const usersToPositionsRelations = relations(
 		}),
 	}),
 );
+
+export const userToTransactions = sqliteTable("user_to_transactions", (t) => ({
+	userId: t
+		.text("user_id")
+		.notNull()
+		.references(() => user.id),
+	transactionId: t
+		.text("transaction_id")
+		.notNull()
+		.references(() => transaction.id),
+}));
