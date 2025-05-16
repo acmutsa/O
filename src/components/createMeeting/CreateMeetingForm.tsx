@@ -121,11 +121,12 @@ export default function CreateMeetingForm({ users }: { users: UserType[] }) {
 					</div>
 
 					{/* Meeting links */}
-					<MeetingLinks
-						links={watch("meetingLinks") || []}
-						onLinksChange={(links) => setValue("meetingLinks", links)}
-						error={errors.meetingLinks?.message as string}
-					/>
+					<div className="space-y-2">
+						<MeetingLinks
+							links={watch("meetingLinks") || []}
+							onLinksChange={(links) => setValue("meetingLinks", links)}
+						/>
+					</div>
 
 					{/* Location */}
 					<div className="space-y-2">
@@ -166,7 +167,7 @@ export default function CreateMeetingForm({ users }: { users: UserType[] }) {
 
 				{/* Right side: date and time selection */}
 				<div className="space-y-6">
-					{/* Date range picker */}
+					{/* Date range picker / Calender */}
 					<div className="space-y-2">
 						<Label>Date Range *</Label>
 						<Calendar
@@ -176,6 +177,10 @@ export default function CreateMeetingForm({ users }: { users: UserType[] }) {
 							selected={date}
 							onSelect={(newDate) => {
 								setDate(newDate);
+								// I make them strings because I needed to be able to set them to empty strings
+								// so that, when the user selects the start date again after an end date is selected the range is reset.
+								// For some reason I couldn't do that when they weren't strings. I forget now.
+								// You can fix it and replace the calender component, then update the zod.
 								if (newDate?.from) {
 									setValue("rangeStart", newDate.from.toISOString());
 								}
@@ -187,6 +192,7 @@ export default function CreateMeetingForm({ users }: { users: UserType[] }) {
 									setValue("rangeEnd", "");
 								}
 							}}
+							// Makes the calender wide
 							numberOfMonths={1}
 							className="border rounded-lg shadow-md p-4 bg-white"
 							classNames={{
@@ -215,6 +221,10 @@ export default function CreateMeetingForm({ users }: { users: UserType[] }) {
 					</div>
 
 					{/* Time selection */}
+					{/*
+						I'm using this TimePicker component from https://time.openstatus.dev/. I honestly don't know how it works, might be good to change.
+						I'm using it now because it has good functionality. Like, the way it looks and the way you add numbers.
+					*/}
 					<div className="grid grid-cols-2 gap-4">
 						<div className="space-y-2">
 							<Label htmlFor="startTime">Start Time</Label>
