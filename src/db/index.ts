@@ -8,16 +8,14 @@ import { createClient as createClientEdge } from "@libsql/client/web";
 import { createClient as createClientNodeServerless } from "@libsql/client";
 import * as schema from "./schema";
 
-export * from "drizzle-orm";
-
 const tursoEdge = createClientEdge({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN,
+	url: process.env.TURSO_DATABASE_URL!,
+	authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
 const tursoNodeServerless = createClientNodeServerless({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN,
+	url: process.env.TURSO_DATABASE_URL!,
+	authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
 // Create the drizzle instance for both edge and node serverless environments

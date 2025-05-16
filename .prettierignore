@@ -1,0 +1,7 @@
+src/db/migrations/meta/**
+src/db/migrations/**
+pnpm-lock.yaml
+pnpm-workspace.yaml
+**/package.json
+*.json
+README.md
