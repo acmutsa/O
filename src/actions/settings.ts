@@ -2,11 +2,14 @@
 "use server";
 
 import { z } from "zod";
-import { db } from "@/db";
 import { userToCohorts } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { authedAction } from "@/lib/server/safe-action";
 import { and, eq } from "drizzle-orm";
+import { db } from "@/db";
+import { UserSettingsSchema } from "@/lib/zod";
+import { user } from "@/db/schema";
+
 
 // Schema for joining a cohort
 const joinCohortSchema = z.object({
@@ -95,3 +98,19 @@ export const leaveCohort = authedAction
 			return { success: false, message: "Failed to leave cohort" };
 		}
 	});
+
+
+export const updateSettingsActions = authedAction.schema(UserSettingsSchema).action(async ({ ctx: { session }, parsedInput: settingsData }) => {
+
+    const userId = session.user.id;
+
+    await db.update(user).set({
+        ...settingsData
+    }).where(eq(user.id, userId));
+
+    return {
+        success: true,
+    }
+
+
+})

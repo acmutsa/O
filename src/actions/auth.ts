@@ -15,3 +15,12 @@ export const signUserOut = authedAction.action(async ({ ctx: { session } }) => {
 		success,
 	};
 });
+
+export const getUserFromSession = userAction.action(async ({ ctx: { userData } }) => {  
+  if (!userData)
+    return returnValidationErrors(z.null(), {
+      _errors: ["User information not found!"]
+    });
+
+  return userData;
+});

@@ -3,8 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
 	/* config options here */
 	devIndicators: {
-		buildActivityPosition: "bottom-right",
+		position: "bottom-right",
 	},
+	images: {
+		remotePatterns: [
+			new URL("https://**.googleusercontent.com/**")
+		]
+	}
 };
 
 export default nextConfig;
