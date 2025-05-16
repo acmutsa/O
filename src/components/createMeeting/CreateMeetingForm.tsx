@@ -194,7 +194,7 @@ export default function CreateMeetingForm({ users }: { users: UserType[] }) {
 							}}
 							// Makes the calender wide
 							numberOfMonths={1}
-							className="border rounded-lg shadow-md p-4 bg-white"
+							className="border rounded-lg shadow-md p-4 bg-transparent"
 							classNames={{
 								root: "w-full flex flex-col items-center gap-4",
 								months: "flex w-full justify-center",
