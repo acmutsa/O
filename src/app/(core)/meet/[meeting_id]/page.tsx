@@ -2,73 +2,67 @@ import { SquareArrowOutUpRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Attendees, MeetingCreator, MeetingDateTimeLocation, MeetingLinks } from "./server";
-import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/server/auth";
 import { headers } from "next/headers";
 import { db } from "@/db";
-import { getMeetingDetails, getMeetingDetailsTest, Meeting } from "@/db/functions";
 
 export default async function Page({ params }: { params: Promise<{ meeting_id: string }> }) {
   const { meeting_id: meetingID } = await params;
 
-  // const meetingPromise = db.query.meeting.findFirst({
-  //   where: (meeting, { eq }) => eq(meeting.meetingID, meetingID),
-  //   columns: {
-  //     creatorID: false
-  //   },
-  //   with: {
-  //     creator: {
-  //       columns: {
-  //         id: true,
-  //         firstName: true,
-  //         lastName: true,
-  //         image: true
-  //       },
-  //       with: {
-  //         userToPositions: {
-  //           columns: {},
-  //           with: {
-  //             position: {
-  //               columns: {
-  //                 name: true
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     },
-  //     attendees: {
-  //       where: (meetingInvites, { eq }) => eq(meetingInvites.hasAccepted, true),
-  //       columns: {},
-  //       with: {
-  //         user: {
-  //           columns: {
-  //             id: true,
-  //             firstName: true,
-  //             lastName: true,
-  //             image: true,
-  //           },
-  //           with: {
-  //             userToPositions: {
-  //               columns: {},
-  //               with: {
-  //                 position: {
-  //                   columns: {
-  //                     name: true
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // });
-
-  const meetingPromise: Promise<Meeting> = new Promise((resolve) =>
-    setTimeout(() => resolve(getMeetingDetailsTest()), 1500)
-  );
+  const meetingPromise = db.query.meeting.findFirst({
+    where: (meeting, { eq }) => eq(meeting.meetingID, meetingID),
+    columns: {
+      creatorID: false
+    },
+    with: {
+      creator: {
+        columns: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          image: true
+        },
+        with: {
+          userToPositions: {
+            columns: {},
+            with: {
+              position: {
+                columns: {
+                  name: true
+                }
+              }
+            }
+          }
+        }
+      },
+      attendees: {
+        where: (meetingInvites, { eq }) => eq(meetingInvites.hasAccepted, true),
+        columns: {},
+        with: {
+          user: {
+            columns: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              image: true,
+            },
+            with: {
+              userToPositions: {
+                columns: {},
+                with: {
+                  position: {
+                    columns: {
+                      name: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
 
   const sessionPromise = auth.api.getSession({
     headers: await headers()
@@ -81,63 +75,19 @@ export default async function Page({ params }: { params: Promise<{ meeting_id: s
     notFound();
   }
 
-  // const attendees = meetingResult.attendees.map(({ user }) => ({
-  //   id: user.id,
-  //   firstName: user.firstName,
-  //   lastName: user.lastName,
-  //   image: user.image,
-  //   positions: user.userToPositions.map(({ position }) => position.name)
-  // }));
-  
-  const attendees = [{
-    id: "1",
-    firstName: "First",
-    lastName: "Last",
-    image: null,
-    positions: ["ACM Projects Officer", "ICPC Director", "ACM Junior Officer", "HackKit Maintainer"]
-  },
-  {
-    id: "2",
-    firstName: "John",
-    lastName: "Doe",
-    image: null,
-    positions: ["ICPC Director"]
-  },
-  {
-    id: "3",
-    firstName: "Adam",
-    lastName: "Smith",
-    image: null,
-    positions: ["ACM Junior Officer"]
-  },
-  {
-    id: "4",
-    firstName: "Shawn",
-    lastName: "Tapp",
-    image: null,
-    positions: ["HackKit Maintainer"]
-  },
-  {
-    id: "5",
-    firstName: "Christian",
-    lastName: "Walker",
-    image: null,
-    positions: ["ACM Projects Officer", "HackKit Maintainer"]
-  }];
+  const attendees = meetingResult.attendees.map(({ user }) => ({
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    image: user.image,
+    positions: user.userToPositions.map(({ position }) => position.name)
+  }));
 
   const { userToPositions: meetingCreatorToPositions, ...meetingCreatorRest } = meetingResult.creator;
 
-  // const meetingCreator = {
-  //   ...meetingCreatorRest,
-  //   positions: meetingCreatorToPositions.map(({ position }) => position.name)
-  // }
-
   const meetingCreator = {
-    id: "1",
-    firstName: "First",
-    lastName: "Last",
-    image: null,
-    positions: ["ACM Officer", "RowdyHacks Director"]
+    ...meetingCreatorRest,
+    positions: meetingCreatorToPositions.map(({ position }) => position.name)
   }
 
   const { id: userID } = sessionResult.user;
@@ -150,7 +100,7 @@ export default async function Page({ params }: { params: Promise<{ meeting_id: s
           <h1 className="font-bold text-3xl">{meetingResult.title}</h1>
           {
             isAdmin || userID === "57ylfYzsqW3bCsSG6JOiNbefe2G7xBGq" && 
-            <Link href="/" className="flex items-center gap-4 font-[600] bg-black dark:bg-white text-white dark:text-black px-7 py-3 rounded-md">
+            <Link href="/" className="flex items-center gap-4 font-[600] bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-md">
               Edit
               <SquareArrowOutUpRight />
             </Link>

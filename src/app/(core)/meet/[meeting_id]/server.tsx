@@ -29,28 +29,11 @@ type AttendeesProps = {
 
 export async function Attendees({ attendees, previewLimit }: AttendeesProps) {
   const remainingAttendeesCount = attendees.length - previewLimit;
-  // const positions = await db.query.position.findMany({
-  //   columns: {
-  //     description: false
-  //   }
-  // });
-
-  const positions: Position[] = [{
-    positionID: 1,
-    name: "ACM Projects Officer"
-  },
-  {
-    positionID: 2,
-    name: "ICPC Director"
-  },
-  {
-    positionID: 3,
-    name: "ACM Junior Officer"
-  },
-  {
-    positionID: 4,
-    name: "HackKit Maintainer"
-  }];
+  const positions = await db.query.position.findMany({
+    columns: {
+      description: false
+    }
+  });
   
   return (
     <div className="border border-slate-300 dark:border-gray-700 p-4 rounded-md">
@@ -83,7 +66,7 @@ export async function Attendees({ attendees, previewLimit }: AttendeesProps) {
         <AllAttendees
           attendees={attendees}
           positions={positions}
-          itemsPerPage={6}
+          itemsPerPage={5}
         />
       </div>
     </div>
@@ -128,23 +111,17 @@ export async function MeetingDateTimeLocation({ rangeStart, rangeEnd, startTime,
   return (
     <div className="text-slate-600 dark:text-gray-400 flex flex-col gap-5">
       <div className="flex items-center gap-3.5 font-[600]">
-        <div className="flex justify-center items-center bg-black dark:bg-white text-white dark:text-black p-2.5 shadow-md rounded-md">
-          <Calendar size={28}/>
-        </div>
+        <Calendar size={24}/>
         <Separator orientation="vertical" className="dark:bg-gray-600" />
         <span>{`${format(rangeStart, dateFormat)}${isMeetingRangeDifferentDays ? ` - ${format(rangeEnd, dateFormat)}` : ""}`}</span>
       </div>
       <div className="flex items-center gap-3.5 font-[600]">
-        <div className="flex justify-center items-center bg-black dark:bg-white text-white dark:text-black p-2.5 shadow-md rounded-md">
-          <Clock size={28}/>
-        </div>
+        <Clock size={24}/>
         <Separator orientation="vertical" className="dark:bg-gray-600" />
         <span>{`${format(startTime, timeFormat)} - ${format(endTime, timeFormat)}`}</span>
       </div>
       <div className="flex items-center gap-3.5 font-[600]">
-        <div className="flex justify-center items-center bg-black dark:bg-white text-white dark:text-black p-2.5 shadow-md rounded-md">
-          <MapPin size={28}/>
-        </div>
+        <MapPin size={24}/>
         <Separator orientation="vertical" className="dark:bg-gray-600" />
         <span>{location}</span>
       </div>
