@@ -65,7 +65,7 @@ export default function SettingsForm(userSettings: UserProps) {
                 execute(data)
 
             })}>
-                    <Card className='w-[300px] rounded-5 bg-blue-50 px-3 py-1 sm:flex-column'>
+                    <Card className='w-[300px] rounded-5 px-3 py-1 sm:flex-column'>
                         {/* <CardHeader>
                             <CardTitle className="text-2xl font-black">Settings</CardTitle>
                         </CardHeader> */}

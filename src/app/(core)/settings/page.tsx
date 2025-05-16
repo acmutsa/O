@@ -7,6 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CohortBadge } from "./cohort-badge";
 import SettingsForm from "@/components/settings/SettingsForm";
+import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 
 // Helper to get user's cohorts and all cohorts
 async function getUserAndCohorts(userId: string) {
@@ -72,9 +82,15 @@ export default async function Page() {
 								)}
 							</div>
 						</div>
+						<div className="flex w-full items-center justify-end">
+							<EditSettingsButton
+								firstName={user.firstName}
+								lastName={user.lastName}
+								pronouns={user.pronouns}
+							/>
+						</div>
 					</CardContent>
 				</Card>
-				<SettingsForm firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} />
 
 				{/* Cohorts */}
 				<Card>
@@ -127,5 +143,37 @@ export default async function Page() {
 				</Card>
 			</div>
 		</div>
+	);
+}
+
+
+function EditSettingsButton({
+	firstName,
+	lastName,
+	pronouns,
+}: {
+	firstName:string;
+	lastName:string;
+	pronouns:string;
+}) {
+	return (
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button variant="outline">Edit Profile</Button>
+			</DialogTrigger>
+			<DialogContent className="sm:max-w-[425px]">
+				<DialogHeader>
+					<DialogTitle>Edit profile</DialogTitle>
+					
+				</DialogHeader>
+				<div className="flex w-full items-center justify-center">
+					<SettingsForm
+						firstName={firstName}
+						lastName={lastName}
+						pronouns={pronouns}
+					/>
+				</div>
+			</DialogContent>
+		</Dialog>
 	);
 }
