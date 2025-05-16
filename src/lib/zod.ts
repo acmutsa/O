@@ -8,8 +8,6 @@ export const UserSettingsSchema = z.object({
 })
 
 /* This will be for any zod schemas that are used in the application. */
-import { z } from "zod";
-
 export const urlValidator = z.string().url({ message: "Invalid URL format" });
 
 // I don't know if this is the best way to do this. For example the db accepts integers for the
