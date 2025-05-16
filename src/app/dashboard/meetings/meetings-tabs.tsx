@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { format, isAfter, isBefore, isToday } from "date-fns"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { CalendarDays, Clock, MapPin, Users, Video, Building2 } from "lucide-react"
+import { CalendarDays, Clock, MapPin, Users, Video, Building2, Check, X } from "lucide-react"
 
 interface MeetingsTabsProps {
     upcomingMeetings: Meeting[]
@@ -37,34 +37,70 @@ function getLocationIcon(type: Meeting['type']) {
 export function MeetingsTabs({ upcomingMeetings, pendingMeetings }: MeetingsTabsProps) {
     return (
         <Tabs defaultValue="upcoming" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="upcoming" className="data-[state=active]:bg-primary">
-                    <div className="flex flex-col items-start px-2">
-                        <span>Upcoming Meetings</span>
-                        <span className="text-xs text-muted-foreground">{upcomingMeetings.length} scheduled</span>
+            <TabsList className="grid w-full grid-cols-2 h-auto p-1 mb-6 bg-muted/50">
+                <TabsTrigger 
+                    value="upcoming" 
+                    className="data-[state=active]:bg-background relative py-3 shadow-none data-[state=active]:shadow-sm"
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="p-1 bg-primary/10 rounded-full">
+                            <CalendarDays className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex flex-col items-start">
+                            <span className="font-medium">Upcoming</span>
+                            <span className="text-xs text-muted-foreground">{upcomingMeetings.length} scheduled</span>
+                        </div>
                     </div>
                 </TabsTrigger>
-                <TabsTrigger value="pending" className="data-[state=active]:bg-primary relative">
-                    <div className="flex flex-col items-start px-2">
-                        <span>Pending Response</span>
-                        <span className="text-xs text-muted-foreground">{pendingMeetings.length} awaiting</span>
+                <TabsTrigger 
+                    value="pending" 
+                    className="data-[state=active]:bg-background relative py-3 shadow-none data-[state=active]:shadow-sm"
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="p-1 bg-primary/10 rounded-full">
+                            <Clock className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex flex-col items-start">
+                            <span className="font-medium">Pending</span>
+                            <span className="text-xs text-muted-foreground">{pendingMeetings.length} awaiting</span>
+                        </div>
                     </div>
                     {pendingMeetings.length > 0 && (
-                        <Badge variant="destructive" className="absolute -top-2 -right-2">
+                        <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0">
                             {pendingMeetings.length}
                         </Badge>
                     )}
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="upcoming" className="space-y-4">
-                {upcomingMeetings.map((meeting) => (
-                    <MeetingCard key={meeting.id} meeting={meeting} />
-                ))}
+                {upcomingMeetings.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                        <div className="p-3 bg-primary/10 rounded-full mb-3">
+                            <CalendarDays className="h-6 w-6 text-primary" />
+                        </div>
+                        <h3 className="font-medium mb-1">No upcoming meetings</h3>
+                        <p className="text-sm text-muted-foreground">You're all caught up! Check back later for new meetings.</p>
+                    </div>
+                ) : (
+                    upcomingMeetings.map((meeting) => (
+                        <MeetingCard key={meeting.id} meeting={meeting} />
+                    ))
+                )}
             </TabsContent>
             <TabsContent value="pending" className="space-y-4">
-                {pendingMeetings.map((meeting) => (
-                    <MeetingCard key={meeting.id} meeting={meeting} showActions />
-                ))}
+                {pendingMeetings.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                        <div className="p-3 bg-primary/10 rounded-full mb-3">
+                            <Check className="h-6 w-6 text-primary" />
+                        </div>
+                        <h3 className="font-medium mb-1">No pending meetings</h3>
+                        <p className="text-sm text-muted-foreground">You've responded to all meeting invitations.</p>
+                    </div>
+                ) : (
+                    pendingMeetings.map((meeting) => (
+                        <MeetingCard key={meeting.id} meeting={meeting} showActions />
+                    ))
+                )}
             </TabsContent>
         </Tabs>
     )
@@ -99,10 +135,7 @@ function MeetingCard({ meeting, showActions = false }: { meeting: Meeting, showA
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <Clock className="h-4 w-4 text-muted-foreground" />
-                                    <span>
-                                        {format(new Date(meeting.date), 'h:mm a')} - 
-                                        {format(new Date(meeting.endDate || meeting.date), 'h:mm a')}
-                                    </span>
+                                    <span>{format(new Date(meeting.date), 'h:mm a')} - {format(new Date(meeting.endDate || meeting.date), 'h:mm a')}</span>
                                 </div>
                             </div>
                         </CardDescription>
@@ -124,21 +157,22 @@ function MeetingCard({ meeting, showActions = false }: { meeting: Meeting, showA
                     </div>
                 </div>
                 <p className="text-sm text-muted-foreground">{meeting.description}</p>
-                {meeting.meetingLink && (
+                {meeting.meetingLink && meeting.status !== 'completed' && meeting.status !== 'cancelled' && meeting.status !== 'pending' && (
                     <Button variant="secondary" className="w-full" asChild>
                         <a href={meeting.meetingLink} target="_blank" rel="noopener noreferrer">
                             Join Meeting
                         </a>
                     </Button>
                 )}
+
             </CardContent>
             {showActions && (
-                <CardFooter className="flex gap-2 pt-6">
-                    <Button className="flex-1" variant="default">
-                        Accept
+                <CardFooter className="flex justify-end gap-2 pt-6">
+                    <Button size="icon" variant="default" className="h-8 w-8" title="Accept">
+                        <Check className="h-4 w-4" />
                     </Button>
-                    <Button className="flex-1" variant="outline">
-                        Decline
+                    <Button size="icon" variant="outline" className="h-8 w-8" title="Decline">
+                        <X className="h-4 w-4" />
                     </Button>
                 </CardFooter>
             )}

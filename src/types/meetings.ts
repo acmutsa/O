@@ -1,4 +1,4 @@
-export type MeetingStatus = 'scheduled' | 'in-progress' | 'completed' | 'cancelled'
+export type MeetingStatus = 'scheduled' | 'in-progress' | 'completed' | 'cancelled' | 'pending'
 
 export interface Attendee {
     id: string
