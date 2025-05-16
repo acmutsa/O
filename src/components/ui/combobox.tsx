@@ -1,3 +1,39 @@
+/**
+ * A searchable dropdown component that supports single and multiple selection.
+ * 
+ * @example
+ * // Single selection
+ * <Combobox
+ *   options={[
+ *     { value: "1", label: "Option 1" },
+ *     { value: "2", label: "Option 2" }
+ *   ]}
+ *   selectedValues={["1"]}
+ *   onChange={(values) => console.log(values)}
+ *   placeholder="Select an option"
+ * />
+ * 
+ * @example
+ * // Multiple selection
+ * <Combobox
+ *   options={[
+ *     { value: "1", label: "Option 1" },
+ *     { value: "2", label: "Option 2" }
+ *   ]}
+ *   selectedValues={["1", "2"]}
+ *   onChange={(values) => console.log(values)}
+ *   placeholder="Select options"
+ *   multiple={true}
+ * />
+ * 
+ * @param props.options - Array of options with value and label
+ * @param props.selectedValues - Array of selected option values
+ * @param props.onChange - Callback function when selection changes
+ * @param props.placeholder - Placeholder text when no option is selected
+ * @param props.emptyText - Text to show when no options match search
+ * @param props.multiple - Enable multiple selection mode
+ */
+
 "use client"
 
 import * as React from "react"
@@ -34,6 +70,8 @@ interface ComboboxProps {
   emptyText?: string
   multiple?: boolean
 }
+
+
 
 export function Combobox({
   options,
