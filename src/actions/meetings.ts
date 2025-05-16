@@ -8,6 +8,7 @@ import { meeting, meetingInvites } from '@/db/schema/meeting.schema';
 import { nanoid } from "nanoid";
 import { sql } from "drizzle-orm";
 import { parse, isValid, format, parseISO } from 'date-fns';
+import z from "zod"
 
 export const createMeeting = authedAction.schema(MeetingCreationSchema).action(async ({ ctx: { session }, parsedInput }) => {
     const { id: userId } = session.user;
@@ -89,4 +90,22 @@ export const createMeeting = authedAction.schema(MeetingCreationSchema).action(a
             error: "Failed to create meeting",
         };
     }
+});
+
+
+export const acceptMeetingInvite = authedAction
+.schema(z.object({
+    meetingId: z.string(),
+}))
+.action(async ({ ctx: { session }, parsedInput }) => {
+    const { id: userId } = session.user;
+    const { meetingId } = parsedInput;
+
+
+    await db.update(meetingInvites).set({ hasAccepted: true }).where(sql`${meetingInvites.meetingID} = ${meetingId} AND ${meetingInvites.id} = ${userId}`);
+    
+    return {
+        success: true,
+    };
+   
 });

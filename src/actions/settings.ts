@@ -107,7 +107,7 @@ export const updateSettingsActions = authedAction.schema(UserSettingsSchema).act
     await db.update(user).set({
         ...settingsData
     }).where(eq(user.id, userId));
-
+		revalidatePath("/settings");
     return {
         success: true,
     }
