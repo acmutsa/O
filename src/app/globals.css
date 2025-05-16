@@ -87,3 +87,7 @@ body {
 		@apply bg-background text-foreground;
 	}
 }
+
+.section-container {
+	@apply border border-slate-300 dark:border-gray-700 p-3 rounded-md
+}

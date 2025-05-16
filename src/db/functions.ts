@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import { user } from "./schema";
 
 export async function getUser(userID: string) {
-	return db.query.user.findFirst({
-		where: eq(user.id, userID),
-	});
+  return db.query.user.findFirst({
+    where:eq(user.id, userID)
+  })
 }
