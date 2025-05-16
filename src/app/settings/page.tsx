@@ -9,9 +9,6 @@ export default function SettingsPage() {
 
     return (
         <div>
-            <h1>
-                Settings
-            </h1>
             <Suspense fallback={<h1>Loading</h1>}><UserSettingsPage /></Suspense>
         </div>
     )
