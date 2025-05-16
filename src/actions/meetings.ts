@@ -38,18 +38,19 @@ export const createMeeting = authedAction.schema(MeetingCreationSchema).action(a
     let endTime = null;
     
     // parse times using date-fns
+    // I do wierd stuff here because of string issues. Needs Work.
     if (meetingData.startTime && meetingData.startTime.trim() !== "" && meetingData.startTime !== "none") {
       const parsedTime = parse(meetingData.startTime, 'HH:mm', new Date());
       if (isValid(parsedTime)) {
         // create a time value based on milliseconds since midnight
-        startTime = parsedTime.getHours() * 3600000 + parsedTime.getMinutes() * 60000;
+        startTime = parsedTime.getHours() * 3600000 + parsedTime.getMinutes() * 60000 + (6 * 3600000);
       }
     }
     
     if (meetingData.endTime && meetingData.endTime.trim() !== "" && meetingData.endTime !== "none") {
       const parsedTime = parse(meetingData.endTime, 'HH:mm', new Date());
       if (isValid(parsedTime)) {
-        endTime = parsedTime.getHours() * 3600000 + parsedTime.getMinutes() * 60000;
+        endTime = parsedTime.getHours() * 3600000 + parsedTime.getMinutes() * 60000 + (6 * 3600000);
       }
     }
 
