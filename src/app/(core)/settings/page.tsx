@@ -6,6 +6,7 @@ import AddCohortCombobox from "./client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CohortBadge } from "./cohort-badge";
+import SettingsForm from "@/components/settings/SettingsForm";
 
 // Helper to get user's cohorts and all cohorts
 async function getUserAndCohorts(userId: string) {
@@ -73,6 +74,7 @@ export default async function Page() {
 						</div>
 					</CardContent>
 				</Card>
+				<SettingsForm firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} />
 
 				{/* Cohorts */}
 				<Card>

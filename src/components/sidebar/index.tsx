@@ -20,6 +20,7 @@ import {
 	Receipt,
 	CreditCard,
 	BadgeDollarSign,
+	Settings
 } from "lucide-react";
 
 import { NavMain } from "./sections/main";
@@ -85,6 +86,11 @@ export function AppSidebar({
 			name: "Inventory",
 			url: "/inventory",
 			icon: GalleryVerticalEnd,
+		},
+		{
+			name:"Settings",
+			url: "/settings",
+			icon: Settings,
 		},
 		...(showAdmin
 			? [
