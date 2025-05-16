@@ -1,18 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-	BadgeCheck,
-	Bell,
-	ChevronsUpDown,
-	Cog,
-	CreditCard,
-	LogOut,
-	Sparkles,
-	Sun,
-	Moon,
-} from "lucide-react";
-
+import { ChevronsUpDown, Cog, LogOut, Sun, Moon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
@@ -29,7 +18,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-
+import Link from "next/link";
 export function NavUser({
 	user,
 }: {
@@ -125,10 +114,12 @@ export function NavUser({
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
-							<DropdownMenuItem>
-								<Cog />
-								Settings
-							</DropdownMenuItem>
+							<Link href="/settings">
+								<DropdownMenuItem>
+									<Cog />
+									Settings
+								</DropdownMenuItem>
+							</Link>
 							<DropdownMenuItem
 								onClick={toggleTheme}
 								className="cursor-pointer"
