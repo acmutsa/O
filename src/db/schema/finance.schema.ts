@@ -22,6 +22,7 @@ export const transaction = sqliteTable("transaction", (t) => ({
 		.text("updated_by_user_id")
 		.notNull()
 		.references(() => user.id),
+	transactedAt: t.integer("transacted_at", { mode: "timestamp" }).notNull(),
 }));
 
 export const transactionRelations = relations(transaction, ({ one }) => ({

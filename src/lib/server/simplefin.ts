@@ -2,36 +2,9 @@ import "server-only";
 
 import { db } from "@/db";
 import { betterFetch } from "@better-fetch/fetch";
-
-interface Transaction {
-	id: string;
-	posted: number; // Unix timestamp
-	amount: string; // String representation of a number
-	description: string;
-	payee: string;
-	memo: string;
-	transacted_at: number; // Unix timestamp
-}
-
-interface Organization {
-	domain: string;
-	name: string;
-	"sfin-url": string;
-	url: string;
-	id: string;
-}
-
-interface Account {
-	org: Organization;
-	id: string;
-	name: string;
-	currency: string; // e.g., "USD"
-	balance: string; // String representation of a number
-	"available-balance": string; // String representation of a number
-	"balance-date": number; // Unix timestamp
-	transactions: Transaction[];
-	holdings: any[]; // Might be able to be more explicit in the future
-}
+import { FinancialDataSchema, type Transaction } from "@/validators/simplefin";
+import { eq } from "drizzle-orm";
+import { transaction as TransactionTable } from "@/db/schema/finance.schema";
 
 export function decodeSimpleFinKey(raw: string) {
 	const [scheme, rest] = raw.split("//");
@@ -58,7 +31,38 @@ async function writeRecentTransactionsToDB() {
 			Authorization: `Basic ${btoa(`${username}:${password}`)}`,
 		},
 	});
-	const data = (await response.text()).replace(/\\"/g, '"');
+	const data = JSON.parse((await response.text()).replace(/\\"/g, '"'));
 
-	console.log(data);
+	const financialData = FinancialDataSchema.safeParse(data);
+
+	if (!financialData.success) {
+		console.error("Invalid SimpleFin data", financialData.error);
+		return;
+	}
+
+	const { accounts } = financialData.data;
+
+	const t = await db.insert(TransactionTable).values(
+		accounts[0].transactions.map((transaction) => ({
+			id: transaction.id,
+			amount: convertMoneyStringToInt(transaction.amount),
+			date: transaction.posted,
+			description: transaction.description,
+			payee: transaction.payee,
+			memo: transaction.memo,
+			transactedAt: new Date(transaction.transacted_at),
+			internalNotes: transaction.memo,
+			updatedByUserId: "system",
+		})),
+	);
+}
+
+export function convertMoneyStringToInt(ammount: string) {
+	const asInt = parseInt(ammount.replace(".", ""));
+	return asInt;
+}
+
+export function convertMoneyIntToString(ammount: number) {
+	const mainUnitAmount = ammount / 100;
+	return mainUnitAmount.toFixed(2).toString();
 }
