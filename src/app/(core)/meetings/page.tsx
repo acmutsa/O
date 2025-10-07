@@ -1,5 +1,6 @@
-import { AddNewMeeting } from './addNewMeeting';
+import { AddNewMeeting } from '../../../components/createMeeting/AddNewMeeting';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import CreateMeetingPage from '@/components/createMeeting/CreateMeetingPage';
 
 export default function MeetingsPage() {
     return (
@@ -23,7 +24,7 @@ export default function MeetingsPage() {
                     <TabsTrigger value="account" className="w-full">Upcoming</TabsTrigger>
                     <TabsTrigger value="password" className="w-full">Past</TabsTrigger>
                 </TabsList>
-                <TabsContent value="account">Make changes to your account here.</TabsContent>
+                <TabsContent value="account"> <CreateMeetingPage /></TabsContent>
                 <TabsContent value="password">Change your password here.</TabsContent>
             </Tabs>
         </div>
