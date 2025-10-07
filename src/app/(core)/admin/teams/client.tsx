@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
-import { createSuborg, createCohort } from "@/actions/admin";
+import { createSuborg, createTeam } from "@/actions/admin";
 import { toast } from "sonner";
 import { useAction } from "next-safe-action/hooks";
 
@@ -66,7 +66,7 @@ export function CreateSuborgDialog() {
 					<DialogTitle>Create new suborg</DialogTitle>
 					<DialogDescription>
 						Create a new suborg below! Note that this is not the
-						same as making a cohort.
+						same as making a team.
 					</DialogDescription>
 				</DialogHeader>
 				<form onSubmit={handleSubmit} className="space-y-4 py-4">
@@ -107,7 +107,7 @@ interface Suborg {
 	shortname: string;
 }
 
-export function CreateCohortDialog({ suborgs }: { suborgs: Suborg[] }) {
+export function CreateTeamDialog({ suborgs }: { suborgs: Suborg[] }) {
 	const [open, setOpen] = useState(false);
 	const [suborgSlug, setSuborgSlug] = useState("");
 	const [name, setName] = useState("");
@@ -116,7 +116,7 @@ export function CreateCohortDialog({ suborgs }: { suborgs: Suborg[] }) {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const router = useRouter();
 
-	const { executeAsync } = useAction(createCohort);
+	const { executeAsync } = useAction(createTeam);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -131,7 +131,7 @@ export function CreateCohortDialog({ suborgs }: { suborgs: Suborg[] }) {
 			});
 
 			if (result && result.data) {
-				toast.success("Cohort created successfully!");
+				toast.success("Team created successfully!");
 				setOpen(false);
 				setSuborgSlug("");
 				setName("");
@@ -152,14 +152,14 @@ export function CreateCohortDialog({ suborgs }: { suborgs: Suborg[] }) {
 			<DialogTrigger asChild>
 				<Button>
 					<Plus className="mr-2 h-4 w-4" />
-					Create Cohort
+					Create Team
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
-					<DialogTitle>Create new cohort</DialogTitle>
+					<DialogTitle>Create new team</DialogTitle>
 					<DialogDescription>
-						Create a new cohort for a suborg.
+						Create a new team for a suborg.
 					</DialogDescription>
 				</DialogHeader>
 				<form onSubmit={handleSubmit} className="space-y-4 py-4">
@@ -183,7 +183,7 @@ export function CreateCohortDialog({ suborgs }: { suborgs: Suborg[] }) {
 						</select>
 					</div>
 					<div className="space-y-2">
-						<Label htmlFor="name">Cohort Name</Label>
+						<Label htmlFor="name">Team Name</Label>
 						<Input
 							id="name"
 							value={name}
@@ -214,7 +214,7 @@ export function CreateCohortDialog({ suborgs }: { suborgs: Suborg[] }) {
 					</div>
 					<DialogFooter>
 						<Button type="submit" disabled={isSubmitting}>
-							{isSubmitting ? "Creating..." : "Create Cohort"}
+							{isSubmitting ? "Creating..." : "Create Team"}
 						</Button>
 					</DialogFooter>
 				</form>

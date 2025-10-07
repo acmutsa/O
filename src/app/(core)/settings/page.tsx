@@ -2,10 +2,10 @@ import { getSession } from "@/lib/server/auth";
 import { db } from "@/db";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import AddCohortCombobox from "./client";
+import AddTeamCombobox from "./client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CohortBadge } from "./cohort-badge";
+import { TeamBadge } from "./team-badge";
 import SettingsForm from "@/components/settings/SettingsForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,27 +18,27 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 
-// Helper to get user's cohorts and all cohorts
-async function getUserAndCohorts(userId: string) {
-	// Get all cohorts
-	const allCohorts = await db.query.cohorts.findMany();
-	// Get user's cohort IDs
-	const userCohortLinks = await db.query.userToCohorts.findMany({
+// Helper to get user's teamss and all teams
+async function getUserAndTeams(userId: string) {
+	// Get all teams
+	const allTeams = await db.query.teams.findMany();
+	// Get user's team IDs
+	const userTeamLinks = await db.query.userToTeams.findMany({
 		where: (link, { eq }) => eq(link.userId, userId),
 	});
-	const userCohortIds = userCohortLinks.map((link) => link.cohortId);
-	const userCohorts = allCohorts.filter((c) => userCohortIds.includes(c.id));
-	const addableCohorts = allCohorts.filter(
-		(c) => !userCohortIds.includes(c.id),
+	const userTeamIds = userTeamLinks.map((link) => link.teamId);
+	const userTeams= allTeams.filter((c) => userTeamIds.includes(c.id));
+	const addableTeams = allTeams.filter(
+		(c) => !userTeamIds.includes(c.id),
 	);
-	return { userCohorts, addableCohorts };
+	return { userTeams, addableTeams };
 }
 
 export default async function Page() {
 	const session = await getSession();
 	if (!session) return null;
 	const user = session.user;
-	const { userCohorts, addableCohorts } = await getUserAndCohorts(user.id);
+	const { userTeams, addableTeams } = await getUserAndTeams(user.id);
 
 	return (
 		<div className="max-w-4xl py-12">
@@ -92,27 +92,27 @@ export default async function Page() {
 					</CardContent>
 				</Card>
 
-				{/* Cohorts */}
+				{/* Teams */}
 				<Card>
 					<CardHeader>
-						<CardTitle>Cohorts</CardTitle>
+						<CardTitle>Teams</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div>
 							<div className="mb-2 text-sm text-muted-foreground">
-								Your current cohorts
+								Your current teams
 							</div>
 							<div className="flex flex-wrap gap-2">
-								{userCohorts.length === 0 && (
+								{userTeams.length === 0 && (
 									<span className="text-sm text-muted-foreground">
-										You are not in any cohorts.
+										You are not in any teams.
 									</span>
 								)}
-								{userCohorts.map((cohort) => (
-									<CohortBadge
-										key={cohort.id}
-										cohort={cohort}
-										userCohorts={userCohorts.map(
+								{userTeams.map((team) => (
+									<TeamBadge
+										key={team.id}
+										team={team}
+										userTeams={userTeams.map(
 											({ id, name }) => ({ id, name }),
 										)}
 									/>
@@ -124,14 +124,14 @@ export default async function Page() {
 
 						<div>
 							<div className="mb-2 text-sm text-muted-foreground">
-								Join a new cohort
+								Join a new team
 							</div>
-							<AddCohortCombobox
-								cohorts={addableCohorts.map(({ id, name }) => ({
+							<AddTeamCombobox
+								teams={addableTeams.map(({ id, name }) => ({
 									id,
 									name,
 								}))}
-								userCohorts={userCohorts.map(
+								userTeams={userTeams.map(
 									({ id, name }) => ({
 										id,
 										name,
