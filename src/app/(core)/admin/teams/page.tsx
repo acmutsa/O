@@ -9,7 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { CreateSuborgDialog, CreateCohortDialog } from "./client";
+import { CreateSuborgDialog, CreateTeamDialog } from "./client";
 
 export default async function Page() {
 	const session = await getSession();
@@ -35,11 +35,11 @@ export default async function Page() {
 			<div className="space-y-6">
 				<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<h2 className="text-2xl font-bold tracking-tight">
-						Cohorts
+						Teams
 					</h2>
-					<CreateCohortDialog suborgs={suborgs} />
+					<CreateTeamDialog suborgs={suborgs} />
 				</div>
-				<CohortShowcase />
+				<TeamShowcase />
 			</div>
 		</div>
 	);
@@ -70,8 +70,8 @@ async function SuborgShowcase() {
 	);
 }
 
-async function CohortShowcase() {
-	const cohorts = await db.query.cohorts.findMany();
+async function TeamShowcase() {
+	const teams = await db.query.teams.findMany();
 
 	return (
 		<div>
@@ -84,18 +84,18 @@ async function CohortShowcase() {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{cohorts && cohorts.length > 0 ? (
-						cohorts.map((cohort) => (
-							<TableRow key={cohort.id}>
-								<TableCell>{cohort.name}</TableCell>
-								<TableCell>{cohort.suborgSlug}</TableCell>
+					{teams && teams.length > 0 ? (
+						teams.map((team) => (
+							<TableRow key={team.id}>
+								<TableCell>{team.name}</TableCell>
+								<TableCell>{team.suborgSlug}</TableCell>
 								<TableCell>
 									{new Date(
-										cohort.startDate,
+										team.startDate,
 									).toLocaleDateString()}{" "}
 									-{" "}
 									{new Date(
-										cohort.endDate,
+										team.endDate,
 									).toLocaleDateString()}
 								</TableCell>
 							</TableRow>
@@ -103,7 +103,7 @@ async function CohortShowcase() {
 					) : (
 						<TableRow>
 							<TableCell colSpan={3} className="text-center">
-								No cohorts found
+								No team found
 							</TableCell>
 						</TableRow>
 					)}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { cn } from "@/lib/shared/utils";
-import { leaveCohort } from "@/actions/settings";
+import { leaveTeam } from "@/actions/settings";
 import { toast } from "sonner";
 import { useOptimisticAction } from "next-safe-action/hooks";
 import {
@@ -17,25 +17,25 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-interface CohortBadgeProps {
-	cohort: { id: string; name: string };
-	userCohorts: { id: string; name: string }[];
+interface TeamBadgeProps {
+	team: { id: string; name: string };
+	userTeams: { id: string; name: string }[];
 }
 
-export function CohortBadge({ cohort, userCohorts }: CohortBadgeProps) {
+export function TeamBadge({ team, userTeams }: TeamBadgeProps) {
 	const [hover, setHover] = useState(false);
 	const [confirmOpen, setConfirmOpen] = useState(false);
 
-	// Use optimistic action to instantly remove the cohort from UI
-	const { execute, isPending } = useOptimisticAction(leaveCohort, {
-		// Pass current cohort state
-		currentState: { userCohorts },
+	// Use optimistic action to instantly remove the team from UI
+	const { execute, isPending } = useOptimisticAction(leaveTeam, {
+		// Pass current team state
+		currentState: { userTeams },
 		// Update optimistically before server responds
 		updateFn: (state, input) => {
-			// Remove the cohort from user's cohorts
+			// Remove the team from user's teams
 			return {
-				userCohorts: state.userCohorts.filter(
-					(c) => c.id !== input.cohortId,
+				userTeams: state.userTeams.filter(
+					(c) => c.id !== input.teamId,
 				),
 			};
 		},
@@ -43,21 +43,21 @@ export function CohortBadge({ cohort, userCohorts }: CohortBadgeProps) {
 		onSuccess: (result) => {
 			if (result.data?.success) {
 				toast.success(
-					result.data.message || "Successfully left cohort",
+					result.data.message || "Successfully left team",
 				);
 			} else {
-				toast.error(result.data?.message || "Failed to leave cohort");
+				toast.error(result.data?.message || "Failed to leave team");
 			}
 		},
 		// Handle errors
 		onError: (error) => {
-			console.error("Error leaving cohort:", error);
+			console.error("Error leaving team:", error);
 			toast.error("An unexpected error occurred");
 		},
 	});
 
-	const handleLeaveCohort = () => {
-		execute({ cohortId: cohort.id });
+	const handleLeaveTeam = () => {
+		execute({ teamId: team.id });
 		setConfirmOpen(false);
 	};
 
@@ -75,7 +75,7 @@ export function CohortBadge({ cohort, userCohorts }: CohortBadgeProps) {
 						hover ? "pr-6" : "pr-3",
 					)}
 				>
-					{cohort.name}
+					{team.name}
 				</Badge>
 				<button
 					onClick={(e) => {
@@ -88,7 +88,7 @@ export function CohortBadge({ cohort, userCohorts }: CohortBadgeProps) {
 						"inline-flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
 						hover ? "scale-100 opacity-100" : "scale-50 opacity-0",
 					)}
-					aria-label={`Leave ${cohort.name} cohort`}
+					aria-label={`Leave ${team.name} team`}
 				>
 					<X size={12} />
 				</button>
@@ -97,10 +97,10 @@ export function CohortBadge({ cohort, userCohorts }: CohortBadgeProps) {
 			<Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Leave Cohort</DialogTitle>
+						<DialogTitle>Leave Team</DialogTitle>
 						<DialogDescription>
 							Are you sure you want to leave the{" "}
-							<strong>{cohort.name}</strong> cohort?
+							<strong>{team.name}</strong> team?
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter className="gap-2 sm:gap-0">
@@ -113,7 +113,7 @@ export function CohortBadge({ cohort, userCohorts }: CohortBadgeProps) {
 						</Button>
 						<Button
 							variant="destructive"
-							onClick={handleLeaveCohort}
+							onClick={handleLeaveTeam}
 							disabled={isPending}
 						>
 							{isPending ? "Leaving..." : "Leave"}

@@ -9,10 +9,10 @@ export const suborgs = sqliteTable("suborgs", (t) => ({
 }));
 
 export const suborgsRelations = relations(suborgs, ({ many }) => ({
-	cohorts: many(cohorts),
+	teams: many(teams),
 }));
 
-export const cohorts = sqliteTable("cohorts", (t) => ({
+export const teams = sqliteTable("teams", (t) => ({
 	id: t.text("id").notNull().primaryKey(),
 	name: t.text("name").notNull(),
 	startDate: t.integer("start_date", { mode: "timestamp" }).notNull(),
@@ -23,21 +23,21 @@ export const cohorts = sqliteTable("cohorts", (t) => ({
 		.references(() => suborgs.slug),
 }));
 
-export const cohortsRelations = relations(cohorts, ({ many, one }) => ({
-	members: many(userToCohorts),
+export const teamsRelations = relations(teams, ({ many, one }) => ({
+	members: many(userToTeams),
 	suborg: one(suborgs, {
-		fields: [cohorts.suborgSlug],
+		fields: [teams.suborgSlug],
 		references: [suborgs.slug],
 	}),
 }));
 
-export const userToCohorts = sqliteTable(
-	"user_to_cohorts",
+export const userToTeams = sqliteTable(
+	"user_to_teams",
 	(t) => ({
-		cohortId: t
-			.text("cohort_id")
+		teamId: t
+			.text("team_id")
 			.notNull()
-			.references(() => cohorts.id),
+			.references(() => teams.id),
 		userId: t
 			.text("user_id")
 			.notNull()
@@ -45,18 +45,18 @@ export const userToCohorts = sqliteTable(
 	}),
 	(table) => [
 		primaryKey({
-			columns: [table.cohortId, table.userId],
+			columns: [table.teamId, table.userId],
 		}),
 	],
 );
 
-export const userToCohortsRelations = relations(userToCohorts, ({ one }) => ({
-	cohort: one(cohorts, {
-		fields: [userToCohorts.cohortId],
-		references: [cohorts.id],
+export const userToTeamsRelations = relations(userToTeams, ({ one }) => ({
+	team: one(teams, {
+		fields: [userToTeams.teamId],
+		references: [teams.id],
 	}),
 	user: one(user, {
-		fields: [userToCohorts.userId],
+		fields: [userToTeams.userId],
 		references: [user.id],
 	}),
 }));

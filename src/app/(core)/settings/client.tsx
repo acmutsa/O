@@ -16,53 +16,53 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "@/lib/shared/utils";
-import { joinCohort } from "@/actions/settings";
+import { joinTeam } from "@/actions/settings";
 import { toast } from "sonner";
 import { useOptimisticAction } from "next-safe-action/hooks";
 
-export function AddCohortCombobox({
-	cohorts,
-	userCohorts,
+export function AddTeamCombobox({
+	teams,
+	userTeams,
 }: {
-	cohorts: { id: string; name: string }[];
-	userCohorts: { id: string; name: string }[];
+	teams: { id: string; name: string }[];
+	userTeams: { id: string; name: string }[];
 }) {
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
 
-	// Use optimistic action to instantly show the user in the new cohort
-	const { execute, isPending } = useOptimisticAction(joinCohort, {
-		// Pass current cohort state
-		currentState: { userCohorts },
+	// Use optimistic action to instantly show the user in the new team
+	const { execute, isPending } = useOptimisticAction(joinTeam, {
+		// Pass current team state
+		currentState: { userTeams },
 		// Update optimistically before server responds
 		updateFn: (state, input) => {
-			const selectedCohort = cohorts.find((c) => c.id === input.cohortId);
-			if (!selectedCohort) return state;
+			const selectedTeam = teams.find((c) => c.id === input.teamId);
+			if (!selectedTeam) return state;
 
-			// Add the selected cohort to user's cohorts
+			// Add the selected team to user's teams
 			return {
-				userCohorts: [...state.userCohorts, selectedCohort],
+				userTeams: [...state.userTeams, selectedTeam],
 			};
 		},
 		// Handle successful action
 		onSuccess: (result) => {
 			if (result.data?.success) {
 				toast.success(
-					result.data.message || "Successfully joined cohort",
+					result.data.message || "Successfully joined team",
 				);
 			} else {
-				toast.error(result.data?.message || "Failed to join cohort");
+				toast.error(result.data?.message || "Failed to join team");
 			}
 		},
 		// Handle errors
 		onError: (error) => {
-			console.error("Error joining cohort:", error);
+			console.error("Error joining team:", error);
 			toast.error("An unexpected error occurred");
 		},
 	});
 
-	const handleJoinCohort = (cohortId: string) => {
-		execute({ cohortId });
+	const handleJoinTeam = (teamId: string) => {
+		execute({ teamId });
 	};
 
 	return (
@@ -76,21 +76,21 @@ export function AddCohortCombobox({
 					disabled={isPending}
 				>
 					{value
-						? cohorts.find((c) => c.id === value)?.name
-						: "Add to cohort..."}
+						? teams.find((c) => c.id === value)?.name
+						: "Add to team..."}
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-[240px] p-0">
 				<Command>
-					<CommandInput placeholder="Search cohorts..." />
+					<CommandInput placeholder="Search teams..." />
 					<CommandList>
-						<CommandEmpty>No cohorts found.</CommandEmpty>
+						<CommandEmpty>No teams found.</CommandEmpty>
 						<CommandGroup>
-							{cohorts.map((cohort) => (
+							{teams.map((team) => (
 								<CommandItem
-									key={cohort.id}
-									value={cohort.id}
+									key={team.id}
+									value={team.id}
 									onSelect={(currentValue) => {
 										setValue(
 											currentValue === value
@@ -99,9 +99,9 @@ export function AddCohortCombobox({
 										);
 										setOpen(false);
 
-										// Join the selected cohort
+										// Join the selected team
 										if (currentValue !== value) {
-											handleJoinCohort(currentValue);
+											handleJoinTeam(currentValue);
 										}
 									}}
 									disabled={isPending}
@@ -109,12 +109,12 @@ export function AddCohortCombobox({
 									<Check
 										className={cn(
 											"mr-2 h-4 w-4",
-											value === cohort.id
+											value === team.id
 												? "opacity-100"
 												: "opacity-0",
 										)}
 									/>
-									{cohort.name}
+									{team.name}
 								</CommandItem>
 							))}
 						</CommandGroup>
@@ -125,4 +125,4 @@ export function AddCohortCombobox({
 	);
 }
 
-export default AddCohortCombobox;
+export default AddTeamCombobox;

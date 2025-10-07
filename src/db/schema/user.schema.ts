@@ -3,7 +3,7 @@ import { relations, sql } from "drizzle-orm";
 import { meetingInvites, meeting } from "../schema";
 import { links } from "./link.schema";
 import { transaction } from "./finance.schema";
-import { userToCohorts } from "./team.schema";
+import { userToTeams } from "./team.schema";
 
 export const user = sqliteTable("user", (t) => ({
 	id: t.text("id").primaryKey(),
@@ -29,7 +29,7 @@ export const userRelations = relations(user, ({ one, many }) => ({
 	meetingsCreated: many(meeting),
 	meetingInvites: many(meetingInvites),
 	links: many(links),
-	cohorts: many(userToCohorts),
+	teams: many(userToTeams),
 }));
 
 export const position = sqliteTable("position", (t) => ({

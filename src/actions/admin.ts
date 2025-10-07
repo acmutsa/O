@@ -3,7 +3,7 @@
 import { adminAction } from "@/lib/server/safe-action";
 import { z } from "zod";
 import { db } from "@/db";
-import { suborgs, cohorts } from "@/db/schema";
+import { suborgs, teams } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
@@ -29,7 +29,7 @@ export const createSuborg = adminAction
 		return suborg[0];
 	});
 
-export const createCohort = adminAction
+export const createTeam = adminAction
 	.schema(
 		z.object({
 			suborgSlug: z.string().min(1),
@@ -49,8 +49,8 @@ export const createCohort = adminAction
 			throw new Error("Suborg not found");
 		}
 
-		const cohort = await db
-			.insert(cohorts)
+		const team = await db
+			.insert(teams)
 			.values({
 				id: nanoid(8),
 				name,
@@ -60,5 +60,5 @@ export const createCohort = adminAction
 			})
 			.returning();
 
-		return cohort[0];
+		return team[0];
 	});
