@@ -59,7 +59,7 @@ export function AppSidebar({
 		},
 		{
 			name: "Meetings",
-			url: "/meet",
+			url: "/meetings",
 			icon: AudioWaveform,
 		},
 		{
